@@ -1,0 +1,14 @@
+{
+    "name": "Easy Planner",
+    "version": "1.0",
+    "description": "Plan your day and motivate you to take action!",
+    "permissions": [
+        "storage",
+        "contextMenus",
+        "tabs"
+    ],    
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "manifest_version": 2
+  }
