@@ -4,13 +4,39 @@ body {
 }
 
 .greeting {
-    height: 50px;
-    background-color: aqua;
+    min-height: 50px;
+}
+
+.greeting img {
+    height: 90px;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: 0;
+}
+
+.greeting__type {
+    color: #2f2f2f;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.greeting__name {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0;
+    color: #6c757d;
 }
 
 .progressContainer {
-    height: 50px;
-    background-color: orange;
+    display: flex;
+    justify-content: center;
+}
+#container {
+    width: 140px;
+    height: 140px;
+    position: relative;
 }
 
 .actionInput {
@@ -21,7 +47,8 @@ body {
 .actionItems {
     min-height: 100px;
 }
-.item{
+
+.actionItems__item {
     height: 60px;
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.07);
