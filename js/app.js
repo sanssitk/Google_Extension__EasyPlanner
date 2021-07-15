@@ -1,6 +1,6 @@
 
 var circle = new ProgressBar.Circle("#container", {
-    color: '#010101',
+    color: '#A252F1',
     // This has to be the same size as the maximum width to
     // prevent clipping
     strokeWidth: 6,
@@ -11,12 +11,12 @@ var circle = new ProgressBar.Circle("#container", {
         autoStyleContainer: false
     },
     from: {
-        color: '#7fdf67',
-        width: 1
+        color: '#A252F1',
+        width: 2
     },
     to: {
-        color: '#7fdf67',
-        width: 4
+        color: '#A252F1',
+        width: 5
     },
     // Set default step function for all animate calls
     step: function (state, circle) {
@@ -27,12 +27,12 @@ var circle = new ProgressBar.Circle("#container", {
         if (value === 0) {
             circle.setText('');
         } else {
-            circle.setText(value);
+            circle.setText(`${value}%`);
         }
 
     }
 });
 circle.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-circle.text.style.fontSize = '2rem';
+circle.text.style.fontSize = '1.2rem';
 
 circle.animate(1.0); // Number from 0.0 to 1.0

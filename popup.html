@@ -15,20 +15,50 @@
 
         <div class="row">
             <div class="col greeting">
-                <h2 class="greeting__type">Good Morning,</h2>
-                <h2 class="greeting__name">Sanjay</h2>
-                <img id="greeting__image" src="images/Decom_Logo.png" />
+                <div class="profile_container">
+                    <div class="profile_image"></div>
+                    <div class="profile_container_title">
+                        <h2 class="greeting__type">Good Morning,</h2>
+                        <h2 class="greeting__name">Sanjay</h2>
+                    </div>
+                </div>
+
+                <div class="info_container">
+                    <div class="info_container_time">
+                        <img id="greeting__image" src="images/GoodMorning.png" />
+                        <span>8:30 am</span>
+                    </div>
+                    <h2 class="info_container_day">Sunday</h2>
+                    <span class="info_container_date">Wed Jul 14</span>
+                </div>
+
             </div>
         </div>
 
         <div class="row">
-            <div class="col progressContainer">
-                <div id="container"></div>
-            </div>
-        </div>
+            <div class="col actionInput">
+                <h2 class="addAction">ADD ACTION</h2>
+                <div class="actionInput_container">
 
-        <div class="row">
-            <div class="col actionInput"></div>
+                    <div class="actionInput_input">
+                        <div class="actionInput_textarea">
+                            <input type="text" placeholder="+ Add Action items & press Enter">
+                        </div>
+
+                        <div class="actionInput_shortLink">
+                            <button class="btn btn-outline-primary">+ Gym</button>
+                            <button class="btn btn-outline-primary">+ Medication</button>
+                            <button class="btn btn-outline-primary">+ Bookmark Link</button>
+                        </div>
+
+                    </div>
+                    <div class="col progressContainer">
+                        <div id="container"></div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
         <div class="row">
@@ -38,8 +68,11 @@
                     <div class="action-text">Reading book</div>
                     <button>x</button>
                 </div>
+
             </div>
         </div>
+
+
 
     </div>
 

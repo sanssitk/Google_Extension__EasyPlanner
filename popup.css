@@ -1,61 +1,69 @@
 body {
     width: 450px;
     height: 562px;
+    margin: 0;
 }
 
+.row {
+    margin: 24px auto;
+}
+
+/* First Row */
 .greeting {
-    min-height: 50px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.greeting img {
-    height: 90px;
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    right: 0;
+.profile_image {
+    width: 56px;
+    height: 56px;
+    background-image: url("./images/Logo128.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.profile_container {
+    display: flex;
 }
 
 .greeting__type {
-    color: #2f2f2f;
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #A252F1;
+
 }
 
 .greeting__name {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 0;
-    color: #6c757d;
+    font-size: 24px;
+    color: #656566;
+    font-weight: 600;
 }
 
-.progressContainer {
+.info_container {
     display: flex;
-    justify-content: center;
-}
-#container {
-    width: 140px;
-    height: 140px;
-    position: relative;
+    flex-direction: column;
 }
 
-.actionInput {
-    height: 200px;
-    background-color: palegoldenrod;
+#greeting__image {
+    width: 35px;
+    height: 35px;
 }
 
-.actionItems {
-    min-height: 100px;
+.info_container_day {
+    color: #A252F1;
+    font-weight: 500;
+    font-size: 24px;
 }
 
-.actionItems__item {
-    height: 60px;
-    border-radius: 10px;
-    border: 2px solid rgba(0, 0, 0, 0.07);
-    background-color: rgba(0, 0, 0, 0.06);
-    padding: 12px;
+.info_container_date {
+    color: #656566;
+    font-weight: 500;
+    font-size: 14px;
+}
 
+.info_container_time {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    color: #656566;
 }
+

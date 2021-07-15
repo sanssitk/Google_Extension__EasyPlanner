@@ -1,23 +1,22 @@
 {
-    "name": "Easy Planner",
-    "version": "1.0",
-    "description": "Plan your day and motivate you to take action!",
-    "permissions": ["storage", "contextMenus", "tabs"],
-    "browser_action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "images/Decom_Logo.png",
-        "32": "images/Decom_Logo.png",
-        "48": "images/Decom_Logo.png",
-        "128": "images/Decom_Logo.png"
-      }
-    },
-    "icons": {
-      "16": "images/Decom_Logo.png",
-      "32": "images/Decom_Logo.png",
-      "48": "images/Decom_Logo.png",
-      "128": "images/Decom_Logo.png"
-    },
-    "manifest_version": 2
-  }
-  
+  "name": "Easy Planner",
+  "version": "1.0",
+  "description": "Plan your day and motivate you to take action!",
+  "permissions": ["storage", "contextMenus", "tabs"],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/Logo16.png",
+      "32": "images/Logo32.png",
+      "48": "images/Logo48.png",
+      "128": "images/Logo128.png"
+    }
+  },
+  "icons": {
+    "16": "images/Logo16.png",
+    "32": "images/Logo32.png",
+    "48": "images/Logo48.png",
+    "128": "images/Logo128.png"
+  },
+  "manifest_version": 2
+}
