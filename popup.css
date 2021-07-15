@@ -169,6 +169,9 @@ h2 {
 }
 
 /* Third Row ********************************************************************************/
+.actionItem_items{
+    width: 100%;
+}
 .actionItem_container {
     padding: 12px;
     display: flex;
