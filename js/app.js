@@ -1,3 +1,35 @@
+let addItemForm = document.querySelector("#addItemForm");
+console.log(addItemForm)
+
+addItemForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let itemText = addItemForm.elements.namedItem("itemText").value;
+    renderActionItem(itemText);
+})
+
+const renderActionItem = (text) => {
+    let actionItem_items = [];
+
+    `<div class="actionItem_container">
+                        <div class="actionItem_item">
+                            <div class="action_item_checkBox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="action_item_content">
+                                read book
+                            </div>
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="actionItem_shortLink">
+                            <a href="">
+                                Four useFull JavaScript shorthands..
+                            </a>
+                        </div>
+                    </div>`
+
+}
+
+
 
 var circle = new ProgressBar.Circle("#container", {
     color: '#A252F1',

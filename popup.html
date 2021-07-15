@@ -12,7 +12,7 @@
 
 <body>
     <div class="container-fluid main">
-
+        <!-- Header ------------------------------------------------------------------------------------>
         <div class="row">
             <div class="col greeting">
                 <div class="profile_container">
@@ -34,15 +34,18 @@
             </div>
         </div>
 
+        <!-- Input ------------------------------------------------------------------------------------>
         <div class="row">
             <div class="col actionInput">
                 <h2 class="addAction">ADD ACTION</h2>
                 <div class="actionInput_container">
 
                     <div class="actionInput_input">
-                        <div class="actionInput_textarea">
-                            <input type="text" placeholder="+ Add Action items & press Enter">
-                        </div>
+                        <form action="submit" id="addItemForm">
+                            <div class="actionInput_textarea">
+                                <input name="itemText" type="text" placeholder="+ Add Action items & press Enter">
+                            </div>
+                        </form>
 
                         <div class="actionInput_shortLink">
                             <button class="btn btn-outline-primary"><i class="fas fa-plus"></i> Gym</button>
@@ -58,10 +61,11 @@
             </div>
         </div>
 
+        <!-- Display ------------------------------------------------------------------------------------>
+
         <div class="row">
             <div class="col">
                 <h2 class="addAction">TODAY'S ACTION</h2>
-
                 <div class="actionItem_items">
 
                     <div class="actionItem_container">
@@ -89,24 +93,10 @@
                             <div class="action_item_content">
                                 read book
                             </div>
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <div class="actionItem_shortLink">
-                            <a href="">
-                                Four useFull JavaScript shorthands..
-                            </a>
-                        </div>
-                    </div>
+                            <div class="action_item_delete">
+                                <i class="fas fa-times"></i>
+                            </div>
 
-                    <div class="actionItem_container">
-                        <div class="actionItem_item">
-                            <div class="action_item_checkBox">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="action_item_content">
-                                read book
-                            </div>
-                            <i class="fas fa-times"></i>
                         </div>
                         <div class="actionItem_shortLink">
                             <a href="">
@@ -116,10 +106,6 @@
                     </div>
 
                 </div>
-
-
-
-
             </div>
         </div>
 
