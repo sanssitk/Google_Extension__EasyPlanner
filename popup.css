@@ -116,6 +116,18 @@ h2 {
     color: white;
 }
 
+.actionInput_shortLink .btn-outline-primary:focus {
+    box-shadow: none;
+}
+
+.actionInput_shortLink .btn-outline-primary:not(:disabled):not(.disabled).active,
+.actionInput_shortLink .btn-outline-primary:not(:disabled):not(.disabled):active,
+.actionInput_shortLink .show>.btn-outline-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #A252F1;
+    border-color: #A252F1;
+}
+
 .actionInput_textarea {
     background-color: rgba(252, 243, 255, 1);
     width: 286px;
@@ -165,18 +177,27 @@ h2 {
     border: 1px solid rgba(162, 82, 241, 0.15);
     border-radius: 8px;
     min-height: 3rem;
-    font-size: 14px;
-    justify-content: center;
-}
-
-.actionItem_container.checked {
-    background-color: rgba(162, 82, 241, 0.25);
+    font-size: 14px;    
 }
 
 .actionItem_item {
-    display: flex;
-    justify-content: space-between;
+    display: flex;    
     color: #656566;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.action_item_checkBox{
+    border: 1px solid #A252F1;
+    border-radius: 4px;
+    padding: 1px 4px;
+    color: #A252F1;
+}
+
+.action_item_content{
+    flex: 1;
+    word-wrap: break-word;
+    margin-left: 14px;
 }
 
 .actionItem_shortLink {
@@ -193,8 +214,4 @@ h2 {
     color: rgba(101, 101, 102, 1);
     text-decoration: none;
     font-size: 12px;
-}
-
-.form-check-input {
-    margin-left: -1.2rem;  
 }
