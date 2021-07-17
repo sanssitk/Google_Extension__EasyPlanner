@@ -43,6 +43,11 @@ const add = (text) => {
     });
 }
 
+const handelCheckBoxClicked = (e) => {
+    const parentEle = e.target.parentElement.parentElement;
+    parentEle.classList.add("completed")
+}
+
 const renderActionItem = (text) => {
 
     let element = document.createElement("div");
@@ -51,6 +56,7 @@ const renderActionItem = (text) => {
     item.classList.add("actionItem_item");
     let checkBox = document.createElement("div");
     checkBox.classList.add("action_item_checkBox");
+    checkBox.addEventListener("click", handelCheckBoxClicked)
     let content = document.createElement("div");
     content.classList.add("action_item_content");
     let itemDelete = document.createElement("div");

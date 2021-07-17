@@ -169,9 +169,10 @@ h2 {
 }
 
 /* Third Row ********************************************************************************/
-.actionItem_items{
+.actionItem_items {
     width: 100%;
 }
+
 .actionItem_container {
     padding: 12px;
     display: flex;
@@ -180,17 +181,31 @@ h2 {
     border: 1px solid rgba(162, 82, 241, 0.15);
     border-radius: 8px;
     min-height: 3rem;
-    font-size: 14px;    
+    font-size: 14px;
+}
+
+.actionItem_container.completed {
+    background-color: #d8b1ff;
+}
+
+.actionItem_container.completed .action_item_checkBox {
+    background-color: #A252F1;
+    color: whitesmoke;
+    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.5);
+}
+
+.actionItem_container.completed .action_item_checkBox i {
+    opacity: 1;
 }
 
 .actionItem_item {
-    display: flex;    
+    display: flex;
     color: #656566;
     align-items: center;
     justify-content: space-between;
 }
 
-.action_item_checkBox{
+.action_item_checkBox {
     border: 1px solid #A252F1;
     border-radius: 4px;
     padding: 1px 4px;
@@ -198,11 +213,23 @@ h2 {
     cursor: pointer;
 }
 
-.action_item_delete{
+.action_item_checkBox * {
+    pointer-events: none;
+}
+
+.action_item_checkBox:hover i {
+    opacity: 1;
+}
+
+.action_item_checkBox i {
+    opacity: 0;
+}
+
+.action_item_delete {
     cursor: pointer;
 }
 
-.action_item_content{
+.action_item_content {
     flex: 1;
     word-wrap: break-word;
     margin-left: 14px;
