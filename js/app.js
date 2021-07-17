@@ -39,10 +39,6 @@ const add = (text) => {
         }
         storage.set({
             actionItems: items
-        }, () => {
-            storage.get(["actionItems"], data => {
-                renderActionItem(data);
-            })
         });
     });
 }
@@ -72,5 +68,4 @@ const renderActionItem = (text) => {
     item.appendChild(itemDelete);
     element.appendChild(shortLink);
     document.querySelector(".actionItem_items").prepend(element)
-
 }
