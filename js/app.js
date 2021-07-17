@@ -2,6 +2,7 @@ let addItemForm = document.querySelector("#addItemForm");
 let itemsList = document.querySelector(".actionItem_items");
 let storage = chrome.storage.sync;
 
+//storage.clear();
 storage.get(["actionItems"], (data) => {
     let items = data.actionItems;
     renderActionItems(items)
@@ -9,7 +10,7 @@ storage.get(["actionItems"], (data) => {
 
 const renderActionItems = (items) => {
     items.map(item => {
-        renderActionItem(item.text)
+        renderActionItem(item.text, item.id, item.completed)
     })
 }
 
@@ -25,7 +26,7 @@ addItemForm.addEventListener("submit", (e) => {
 
 const add = (text) => {
     let actionItem = {
-        id: 1,
+        id: uuidv4(),
         added: new Date().toString(),
         text: text,
         completed: null,
@@ -43,13 +44,32 @@ const add = (text) => {
     });
 }
 
-const handelCheckBoxClicked = (e) => {
-    const parentEle = e.target.parentElement.parentElement;
-    parentEle.classList.add("completed")
+const markUnmarkCompleted = (id, completedStatus) => {
+    storage.get(["actionItems"], (data) => {
+        let items = data.actionItems;
+        let foundItemIndex = items.findIndex((item) => item.id == id);
+
+        if (foundItemIndex >= 0) {
+            items[foundItemIndex].completed = completedStatus;
+            storage.set({
+                actionItems: items
+            })
+        }
+    })
 }
 
-const renderActionItem = (text) => {
+const handelCheckBoxClicked = (e) => {
+    const parentEle = e.target.parentElement.parentElement;
+    if (parentEle.classList.contains("completed")) {
+        parentEle.classList.remove("completed")
+        markUnmarkCompleted(parentEle.id, null)
+    } else {
+        parentEle.classList.add("completed");
+        markUnmarkCompleted(parentEle.id, new Date().toString())
+    }
+}
 
+const renderActionItem = (text, id, completed) => {
     let element = document.createElement("div");
     element.classList.add("actionItem_container");
     let item = document.createElement("div");
@@ -67,7 +87,8 @@ const renderActionItem = (text) => {
     content.textContent = text;
     itemDelete.innerHTML = `<i class="fas fa-times"></i>`
     shortLink.innerHTML = `<a href="">Four useFull JavaScript shorthands..</a>`
-
+    if (completed) element.classList.toggle("completed");
+    element.setAttribute("id", id)
     element.appendChild(item);
     item.appendChild(checkBox);
     item.appendChild(content);
