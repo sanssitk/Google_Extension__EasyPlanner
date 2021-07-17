@@ -195,6 +195,11 @@ h2 {
     border-radius: 4px;
     padding: 1px 4px;
     color: #A252F1;
+    cursor: pointer;
+}
+
+.action_item_delete{
+    cursor: pointer;
 }
 
 .action_item_content{
