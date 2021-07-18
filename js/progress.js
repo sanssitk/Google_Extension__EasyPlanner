@@ -15,7 +15,7 @@ var circle = new ProgressBar.Circle("#container", {
     },
     to: {
         color: '#A252F1',
-        width: 5
+        width: 6
     },
     // Set default step function for all animate calls
     step: function (state, circle) {
@@ -34,4 +34,4 @@ var circle = new ProgressBar.Circle("#container", {
 circle.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
 circle.text.style.fontSize = '1.2rem';
 
-circle.animate(1.0); // Number from 0.0 to 1.0
+circle.animate(0.5); // Number from 0.0 to 1.0
