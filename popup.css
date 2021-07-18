@@ -101,6 +101,10 @@ h2 {
     justify-content: space-between;
 }
 
+.btn.btn-outline-primary * {
+    pointer-events: none;
+}
+
 .actionInput_shortLink .btn.btn-outline-primary {
     font-size: 12px;
     font-weight: 600;
@@ -215,6 +219,14 @@ h2 {
 
 .action_item_checkBox * {
     pointer-events: none;
+}
+
+.action_item_delete * {
+    pointer-events: none;
+}
+
+.action_item_delete:hover {
+    color: red;
 }
 
 .action_item_checkBox:hover i {

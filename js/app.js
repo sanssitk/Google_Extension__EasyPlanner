@@ -1,12 +1,18 @@
+let storage = chrome.storage.sync;
 let addItemForm = document.querySelector("#addItemForm");
 let itemsList = document.querySelector(".actionItem_items");
-let storage = chrome.storage.sync;
+
+let actionItemsUtils = new ActionItems();
 
 //storage.clear();
 storage.get(["actionItems"], (data) => {
     let items = data.actionItems;
+    console.log(items)
+    createQuickActionListener();
     renderActionItems(items)
-    setProgress();
+    chrome.storage.onChanged.addListener(() => {
+        actionItemsUtils.setProgress();
+    });
 })
 
 const renderActionItems = (items) => {
@@ -14,61 +20,68 @@ const renderActionItems = (items) => {
         renderActionItem(item.text, item.id, item.completed)
     })
 }
+const handleQuickActionListener = (e) => {
+    const text = e.target.getAttribute("data-text");
+    const id = e.target.getAttribute("data-id");
+
+    getCurrentTabl().then((tab) => {
+        actionItemsUtils.addQuickActionItem(id, text, tab, (actionItem) => {
+            renderActionItem(actionItem.text, actionItem.id, actionItem.completed)
+        })
+    })
+    // actionItemsUtils.add(text, (actionItem) => {
+    //     renderActionItem(actionItem.text, actionItem.id, actionItem.completed)
+    // });
+
+}
+
+const createQuickActionListener = () => {
+    let buttons = document.querySelectorAll(".quickButton")
+    buttons.forEach((button) => {
+        button.addEventListener("click", handleQuickActionListener)
+    })
+}
+
+async function getCurrentTabl() {
+    return await new Promise((resolve, reject) => {
+        queryOptions = {
+            active: true,
+            windowId: chrome.windows.WINDOW_ID_CURRENT
+        };
+        chrome.tabs.query(queryOptions, (tab) => {
+            resolve(tab[0])
+        })
+    })
+}
 
 addItemForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let itemText = addItemForm.elements.namedItem("itemText").value;
     if (itemText) {
-        add(itemText);
-        renderActionItem(itemText);
-        addItemForm.elements.namedItem("itemText").value = "";
+        actionItemsUtils.add(itemText, null, (actionItem) => {
+            renderActionItem(actionItem.text, actionItem.id, actionItem.completed)
+            addItemForm.elements.namedItem("itemText").value = "";
+        });
     }
 })
-
-const add = (text) => {
-    let actionItem = {
-        id: uuidv4(),
-        added: new Date().toString(),
-        text: text,
-        completed: null,
-    }
-    storage.get(["actionItems"], (data) => {
-        let items = data.actionItems;
-        if (!items) {
-            items = [actionItem]
-        } else {
-            items.push(actionItem)
-        }
-        storage.set({
-            actionItems: items
-        });
-    });
-}
-
-const markUnmarkCompleted = (id, completedStatus) => {
-    storage.get(["actionItems"], (data) => {
-        let items = data.actionItems;
-        let foundItemIndex = items.findIndex((item) => item.id == id);
-
-        if (foundItemIndex >= 0) {
-            items[foundItemIndex].completed = completedStatus;
-            storage.set({
-                actionItems: items
-            }, () => {
-                setProgress();
-            })
-        }
-    })
-}
 
 const handelCheckBoxClicked = (e) => {
     const parentEle = e.target.parentElement.parentElement;
     if (parentEle.classList.contains("completed")) {
         parentEle.classList.remove("completed")
-        markUnmarkCompleted(parentEle.id, null)
+        actionItemsUtils.markUnmarkCompleted(parentEle.id, null)
     } else {
         parentEle.classList.add("completed");
-        markUnmarkCompleted(parentEle.id, new Date().toString())
+        actionItemsUtils.markUnmarkCompleted(parentEle.id, new Date().toString())
+    }
+}
+
+const handelDeleteClicked = (e) => {
+    const parentEle = e.target.parentElement.parentElement;
+    if (parentEle.id) {
+        actionItemsUtils.remove(parentEle.id, () => {
+            parentEle.remove();
+        });
     }
 }
 
@@ -84,6 +97,7 @@ const renderActionItem = (text, id, completed) => {
     content.classList.add("action_item_content");
     let itemDelete = document.createElement("div");
     itemDelete.classList.add("action_item_delete");
+    itemDelete.addEventListener("click", handelDeleteClicked)
     let shortLink = document.createElement("div");
     shortLink.classList.add("actionItem_shortLink");
     checkBox.innerHTML = `<i class="fas fa-check"></i>`
@@ -99,53 +113,3 @@ const renderActionItem = (text, id, completed) => {
     element.appendChild(shortLink);
     document.querySelector(".actionItem_items").prepend(element)
 }
-
-const setProgress = () => {
-    storage.get(["actionItems"], (data) => {
-        let items = data.actionItems;
-        let completedItems;
-        completedItems = items.filter(item => item.completed)
-        let progress = 0;
-        progress = completedItems.length / items.length;
-        circle.animate(progress); // Number from 0.0 to 1.0    
-    })
-}
-
-//Prgress Bar
-var circle = new ProgressBar.Circle("#container", {
-    color: '#A252F1',
-    // This has to be the same size as the maximum width to
-    // prevent clipping
-    strokeWidth: 6,
-    trailWidth: 2,
-    easing: 'easeInOut',
-    duration: 1400,
-    text: {
-        autoStyleContainer: false
-    },
-    from: {
-        color: '#A252F1',
-        width: 2
-    },
-    to: {
-        color: '#A252F1',
-        width: 6
-    },
-    // Set default step function for all animate calls
-    step: function (state, circle) {
-        circle.path.setAttribute('stroke', state.color);
-        circle.path.setAttribute('stroke-width', state.width);
-
-        var value = Math.round(circle.value() * 100);
-        if (value === 0) {
-            circle.setText('');
-        } else {
-            circle.setText(`${value}%`);
-        }
-
-    }
-});
-circle.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-circle.text.style.fontSize = '1.2rem';
-
-// circle.animate(percentage); // Number from 0.0 to 1.0    
