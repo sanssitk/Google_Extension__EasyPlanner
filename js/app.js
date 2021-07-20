@@ -5,42 +5,13 @@ let itemsList = document.querySelector(".actionItem_items");
 let actionItemsUtils = new ActionItems();
 
 
-// let timeContainer = document.querySelector(".info_container_time");
-// let timeBlock = timeContainer.createElement("span");
-// timeContainer.appendChild()
-
-const getTime = () => {
-    let date = new Date();
-    let hrs = date.getHours();
-    let min = date.getMinutes();
-    let day = date.getDay();
-    let month = date.getMonth();
-    let today = date.getDate();
-    let ampm = hrs >= 12 ? "pm" : "am";
-    hrs = hrs % 12;
-    hrs = hrs ? hrs : 12;
-    let timeCont = document.querySelector(".info_container_time");
-    var minitues = () => {
-        if (min < 9) return "0" + min;
-        else return min;
-    }
-    var time = `${hrs}:${minitues()} ${ampm}`
-    timeCont.append(time)
-    const days = ["Sunday", "Monday", "Tuesday", "WednesDay", "Thursday", "Friday", "Saturday"];
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    dayName = days[day]
-    monthName = monthNames[month]
-    document.querySelector(".info_container_day").innerText = dayName;
-    document.querySelector(".info_container_date").innerText = monthName + " " + today;
-    return timeCont;
-}
-
 //storage.clear();
 storage.get(["actionItems"], (data) => {
-    getTime();
+    getTime(new Date());
     let items = data.actionItems;
     createQuickActionListener();
-    renderActionItems(items)
+    renderActionItems(items);
+    createNameDialogListner();
     actionItemsUtils.setProgress();
     chrome.storage.onChanged.addListener(() => {
         actionItemsUtils.setProgress();
@@ -50,6 +21,15 @@ storage.get(["actionItems"], (data) => {
 const renderActionItems = (items) => {
     items.map(item => {
         renderActionItem(item.text, item.id, item.completed, item.website)
+    })
+}
+
+const createNameDialogListner = () => {
+    let greetingName = document.querySelector(".greeting__name");
+    greetingName.addEventListener("click", () => {
+        //open the modal
+        $('#updateNameModal').modal('show')
+
     })
 }
 

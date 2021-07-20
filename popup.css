@@ -63,6 +63,7 @@ h2 {
     font-size: 24px;
     color: #656566;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .info_container {
@@ -86,14 +87,12 @@ h2 {
 
 .info_container_day {
     font-size: 2rem;
-    margin-left: 8px;
     font-weight: 500;
 }
 
 .info_container_date {
     font-size: 0.9rem;
     font-weight: 400;
-    margin-left: 8px;
 }
 
 
