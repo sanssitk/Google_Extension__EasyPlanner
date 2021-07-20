@@ -25,13 +25,24 @@ const renderActionItems = (items) => {
 }
 
 const createNameDialogListner = () => {
-    let greetingName = document.querySelector(".greeting__name");
+    let greetingName = document.querySelector(".greeting__title");
     greetingName.addEventListener("click", () => {
         //open the modal
         $('#updateNameModal').modal('show')
-
     })
 }
+
+let input = document.querySelector(".saveInput");
+input.addEventListener("click", () => {
+    let inputBox = document.querySelector("#inputName");
+    let inputText = inputBox.target.value;
+    console.log(inputText)
+})
+
+// const handleUpdateName = () => {
+
+// }
+
 
 async function getCurrentTabl() {
     return await new Promise((resolve, reject) => {

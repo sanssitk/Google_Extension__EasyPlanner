@@ -12,12 +12,14 @@ h2 {
     margin: 0;
 }
 
-/* :root {
-    --primary-dark: #A252F1;
+:root {
+    --primary-dark: #A252F1; 
     --primary-light: #d8b1ff;
     --primary-gray: #9F9F9F;
-    --primary-gray-light: rgba(101, 101, 102, 0.5);;
-} */
+    --primary-gray-light: rgba(101, 101, 102, 0.5);
+}
+
+
 .col {
     padding-right: 10px;
 }
@@ -43,7 +45,7 @@ h2 {
     background-image: url("./images/Logo128.png");
     background-size: cover;
     background-position: center;
-    border: 2px solid #9F9F9F;
+    border: 2px solid var(--primary-gray);
     border-radius: 50%;
     margin-right: 12px;
 }
@@ -56,14 +58,37 @@ h2 {
 .greeting__type {
     font-size: 18px;
     font-weight: 500;
-    color: #A252F1;
+    color: var(--primary-dark);
+}
+
+.greeting__title {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.greeting__title i {
+    position: absolute;
+    font-size: 0.8rem;
+    top: 1px;
+    left: 75px;
+    color: #656566;
+    border: 1.5px solid #656566;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.2s ease-in;
+}
+
+.greeting__title:hover i {
+    opacity: 1;
 }
 
 .greeting__name {
     font-size: 24px;
     color: #656566;
+    margin-right: 8px;
     font-weight: 600;
-    cursor: pointer;
 }
 
 .info_container {
@@ -121,15 +146,15 @@ h2 {
 .actionInput_shortLink .btn.btn-outline-primary {
     font-size: 12px;
     font-weight: 600;
-    color: rgba(101, 101, 102, 0.5);
-    border-color: #A252F1;
+    color: var(--primary-gray-light);
+    border-color: var(--primary-dark);
     padding: 0.3rem 0.5rem;
 
     transition: all 0.3s ease-in-out;
 }
 
 .actionInput_shortLink .btn.btn-outline-primary:hover {
-    background-color: #A252F1;
+    background-color: var(--primary-dark);
     color: white;
 }
 
@@ -141,8 +166,8 @@ h2 {
 .actionInput_shortLink .btn-outline-primary:not(:disabled):not(.disabled):active,
 .actionInput_shortLink .show>.btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #A252F1;
-    border-color: #A252F1;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
 }
 
 .actionInput_textarea {
@@ -153,7 +178,7 @@ h2 {
     border: 1px solid rgba(162, 82, 241, 0.15);
     align-items: center;
     padding: 8px;
-    color: rgba(101, 101, 102, 0.5);
+    color: var(--primary-gray-light);
     margin-bottom: 6px;
 }
 
@@ -202,11 +227,11 @@ h2 {
 }
 
 .actionItem_container.completed {
-    background-color: #d8b1ff;
+    background-color: var(--primary-light);
 }
 
 .actionItem_container.completed .action_item_checkBox {
-    background-color: #A252F1;
+    background-color: var(--primary-dark);
     color: whitesmoke;
     box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.5);
 }
@@ -223,10 +248,10 @@ h2 {
 }
 
 .action_item_checkBox {
-    border: 1px solid #A252F1;
+    border: 1px solid var(--primary-dark);
     border-radius: 4px;
     padding: 1px 4px;
-    color: #A252F1;
+    color: var(--primary-dark);
     cursor: pointer;
 }
 
@@ -301,8 +326,8 @@ h2 {
 }
 
 .actionItem_title {
-    margin-left: 12px;   
-    transition: all 0.2s ease; 
+    margin-left: 12px;
+    transition: all 0.2s ease;
 }
 
 .actionItem_title span {
