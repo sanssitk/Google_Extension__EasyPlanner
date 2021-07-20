@@ -20,10 +20,14 @@ const getTime = () => {
     hrs = hrs % 12;
     hrs = hrs ? hrs : 12;
     let timeCont = document.querySelector(".info_container_time");
-    var time = `${hrs}:${min} ${ampm}`
+    var minitues = () => {
+        if (min < 9) return "0" + min;
+        else return min;
+    }
+    var time = `${hrs}:${minitues()} ${ampm}`
     timeCont.append(time)
     const days = ["Sunday", "Monday", "Tuesday", "WednesDay", "Thursday", "Friday", "Saturday"];
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     dayName = days[day]
     monthName = monthNames[month]
     document.querySelector(".info_container_day").innerText = dayName;
