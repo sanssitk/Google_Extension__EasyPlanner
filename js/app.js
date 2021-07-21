@@ -6,18 +6,25 @@ let actionItemsUtils = new ActionItems();
 
 
 //storage.clear();
-storage.get(["actionItems"], (data) => {
+storage.get(["actionItems", "name"], (data) => {
     getTime(new Date());
     let items = data.actionItems;
+    let name = data.name;
+    setUsersName(name)
     createQuickActionListener();
     renderActionItems(items);
     createNameDialogListner();
+    createUpdateNameListener()
     actionItemsUtils.setProgress();
     chrome.storage.onChanged.addListener(() => {
         actionItemsUtils.setProgress();
     });
 })
 
+const setUsersName = (userName) => {
+    userName ? userName : "Add Your Name";
+    document.querySelector(".greeting__name").innerText = userName;
+}
 const renderActionItems = (items) => {
     items.map(item => {
         renderActionItem(item.text, item.id, item.completed, item.website)
@@ -25,19 +32,32 @@ const renderActionItems = (items) => {
 }
 
 const createNameDialogListner = () => {
-    let greetingName = document.querySelector(".greeting__title");
-    greetingName.addEventListener("click", () => {
+    let greetingTitle = document.querySelector(".greeting__title");
+    greetingTitle.addEventListener("click", () => {
         //open the modal
         $('#updateNameModal').modal('show')
     })
 }
 
-let input = document.querySelector(".saveInput");
-input.addEventListener("click", () => {
-    let inputBox = document.querySelector("#inputName");
-    let inputText = inputBox.target.value;
-    console.log(inputText)
-})
+const createUpdateNameListener = () => {
+    let input = document.querySelector(".saveInput");
+    input.addEventListener("click", handleUpdateName)
+}
+
+const handleUpdateName = () => {
+    let inputText = document.querySelector("#inputName").value;
+    if (inputText) {
+        // save the name
+        actionItemsUtils.saveName(inputText, () => {
+            // set the user's name on frontend
+            setUsersName(inputText);
+            $('#updateNameModal').modal('hide')
+        })
+    }
+}
+
+
+
 
 // const handleUpdateName = () => {
 

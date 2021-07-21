@@ -1,5 +1,11 @@
 class ActionItems {
 
+    saveName(name, callback) {
+        storage.set({
+            name: name,
+        }, callback)
+    }
+
     addQuickActionItem(id, text, tab, callback) {
         let website = null;
         if (id == "quickLink3") {
