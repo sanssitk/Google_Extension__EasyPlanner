@@ -76,7 +76,16 @@ class ActionItems {
             completedItems = items.filter(item => item.completed)
             let progress = 0;
             progress = completedItems.length / items.length;
+            this.setBrowserBadge(items.length - completedItems.length);
             circle.animate(progress); // Number from 0.0 to 1.0    
+        })
+    }
+
+    setBrowserBadge(todoItems) {
+        let text = `${todoItems}`;
+        if (todoItems > 9) text = "9+"
+        chrome.browserAction.setBadgeText({
+            text: text
         })
     }
 
