@@ -4,7 +4,6 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
-
 //storage.clear();
 storage.get(["actionItems", "name"], (data) => {
     getTime(new Date());
@@ -25,10 +24,28 @@ const setUsersName = (userName) => {
     userName ? userName : "Add Your Name";
     document.querySelector(".greeting__name").innerText = userName;
 }
+// to see again
+const filterActionItem = (actionItems) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const filteredItems = actionItems.filter((item) => {
+        if (item.completed) {
+            const completedDate = new Date(item.completed)
+            if (completedDate < currentDate) {
+                return false;
+            }
+        }
+        return true;
+    })
+    return filteredItems;
+}
 const renderActionItems = (items) => {
-
-    items.map(item => {
+    const filtedItems = filterActionItem(items)
+    filtedItems.map(item => {
         renderActionItem(item.text, item.id, item.completed, item.website)
+    })
+    storage.set({
+        actionItems: filtedItems
     })
 }
 
