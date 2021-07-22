@@ -26,6 +26,7 @@ const setUsersName = (userName) => {
     document.querySelector(".greeting__name").innerText = userName;
 }
 const renderActionItems = (items) => {
+
     items.map(item => {
         renderActionItem(item.text, item.id, item.completed, item.website)
     })
@@ -55,14 +56,6 @@ const handleUpdateName = () => {
         })
     }
 }
-
-
-
-
-// const handleUpdateName = () => {
-
-// }
-
 
 async function getCurrentTabl() {
     return await new Promise((resolve, reject) => {
@@ -169,5 +162,6 @@ const createLinkContainer = (url, fav_icon, title) => {
                 <span>${title}</span>
             </div>
         </a> `
+
     return mainLinkEle;
 }

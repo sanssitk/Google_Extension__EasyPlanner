@@ -1,7 +1,7 @@
 class ActionItems {
 
     saveName(name, callback) {
-        storage.set({
+        chrome.storage.sync.set({
             name: name,
         }, callback)
     }
@@ -27,14 +27,14 @@ class ActionItems {
             completed: null,
             website: website
         }
-        storage.get(["actionItems"], (data) => {
+        chrome.storage.sync.get(["actionItems"], (data) => {
             let items = data.actionItems;
             if (!items) {
                 items = [actionItem]
             } else {
                 items.push(actionItem)
             }
-            storage.set({
+            chrome.storage.sync.set({
                 actionItems: items
             }, () => {
                 callback(actionItem)
@@ -43,12 +43,12 @@ class ActionItems {
     }
 
     remove = (id, callback) => {
-        storage.get(["actionItems"], (data) => {
+        chrome.storage.sync.get(["actionItems"], (data) => {
             let items = data.actionItems;
             let foundItemIndex = items.findIndex((item) => item.id == id);
             if (foundItemIndex >= 0) {
                 items.splice(foundItemIndex, 1)
-                storage.set({
+                chrome.storage.sync.set({
                     actionItems: items
                 }, callback)
             }
@@ -56,13 +56,13 @@ class ActionItems {
     }
 
     markUnmarkCompleted(id, completedStatus) {
-        storage.get(["actionItems"], (data) => {
+        chrome.storage.sync.get(["actionItems"], (data) => {
             let items = data.actionItems;
             let foundItemIndex = items.findIndex((item) => item.id == id);
 
             if (foundItemIndex >= 0) {
                 items[foundItemIndex].completed = completedStatus;
-                storage.set({
+                chrome.storage.sync.set({
                     actionItems: items
                 })
             }
@@ -70,14 +70,14 @@ class ActionItems {
     }
 
     setProgress = () => {
-        storage.get(["actionItems"], (data) => {
+        chrome.storage.sync.get(["actionItems"], (data) => {
             let items = data.actionItems;
             let completedItems;
             completedItems = items.filter(item => item.completed)
             let progress = 0;
             progress = completedItems.length / items.length;
             this.setBrowserBadge(items.length - completedItems.length);
-            circle.animate(progress); // Number from 0.0 to 1.0    
+            if (typeof window.circle !== "undefined") circle.animate(progress); // Number from 0.0 to 1.0    
         })
     }
 

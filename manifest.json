@@ -2,7 +2,15 @@
   "name": "Easy Planner",
   "version": "1.0",
   "description": "Plan your day and motivate you to take action!",
-  "permissions": ["storage", "contextMenus", "tabs"],
+  "permissions": ["storage", "tabs", "contextMenus"],
+  "background": {
+    "scripts": [
+      "packages/uuidv4.min.js",
+      "js/action-items-Utils.js",
+      "js/background.js"
+    ],
+    "persistent": false
+  },
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": {
