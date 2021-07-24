@@ -24,7 +24,7 @@ const setUsersName = (userName) => {
     userName ? userName : "Add Your Name";
     document.querySelector(".greeting__name").innerText = userName;
 }
-// to see again
+
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
@@ -92,7 +92,7 @@ const handleQuickActionListener = (e) => {
 
     getCurrentTabl().then((tab) => {
         actionItemsUtils.addQuickActionItem(id, text, tab, (actionItem) => {
-            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website)
+            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
         })
     })
 }
@@ -109,7 +109,7 @@ addItemForm.addEventListener("submit", (e) => {
     let itemText = addItemForm.elements.namedItem("itemText").value;
     if (itemText) {
         actionItemsUtils.add(itemText, null, (actionItem) => {
-            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website)
+            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
             addItemForm.elements.namedItem("itemText").value = "";
         });
     }
@@ -129,13 +129,14 @@ const handelCheckBoxClicked = (e) => {
 const handelDeleteClicked = (e) => {
     const parentEle = e.target.parentElement.parentElement;
     if (parentEle.id) {
+        let jEle = $(`div[id="${parentEle.id}"]`);
         actionItemsUtils.remove(parentEle.id, () => {
-            parentEle.remove();
+            animateDeleteItem(jEle);
         });
     }
 }
 
-const renderActionItem = (text, id, completed, website = null) => {
+const renderActionItem = (text, id, completed, website = null, duration = 300) => {
     let element = document.createElement("div");
     element.classList.add("actionItem_container");
     let item = document.createElement("div");
@@ -164,7 +165,28 @@ const renderActionItem = (text, id, completed, website = null) => {
         element.appendChild(linkContainer);
     }
 
-    document.querySelector(".actionItem_items").prepend(element)
+    document.querySelector(".actionItem_items").prepend(element);
+    let jEle = $(`div[id="${id}"]`);
+    animateAddItems(jEle, duration);
+}
+
+const animateAddItems = (jEle, duration) => {
+    jEle.css({
+        marginTop: `-46px`,
+        opacity: 0
+    }).animate({
+        opacity: 1,
+        marginTop: "0px",
+    }, duration)
+}
+
+const animateDeleteItem = (jEle) => {
+    jEle.animate({
+        marginLeft: "1000px",
+        opacity: "0",
+    }, 450, () => {
+        jEle.remove();
+    })
 }
 
 const createLinkContainer = (url, fav_icon, title) => {
