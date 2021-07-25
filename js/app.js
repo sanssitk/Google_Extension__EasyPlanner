@@ -21,8 +21,8 @@ storage.get(["actionItems", "name"], (data) => {
 })
 
 const setUsersName = (userName) => {
-    userName ? userName : "Add Your Name";
-    document.querySelector(".greeting__name").innerText = userName;
+    USERNAME = userName ? userName : "Add your name";
+    document.querySelector(".greeting__name").innerText = USERNAME;
 }
 
 const filterActionItem = (actionItems) => {

@@ -16,13 +16,17 @@ h2 {
 }
 
 :root {
-    --primary-pink--100: rgba(162, 82, 241, 1);
-    --primary-pink--50: rgba(162, 82, 241, 0.5);
-    --primary-pink--10: rgb(232, 210, 255);
-    --primary-pink--20: rgba(235, 168, 255, 0.25);
-    --primary-gray--50: rgba(101, 101, 102, 1);
-    --primary-gray--20: rgba(101, 101, 102, 0.2);
+    --primary-pink--100: rgba(90, 24, 154, 1);
+    --primary-pink--75: rgba(90, 24, 154, 0.75);
+    --primary-pink--50: rgba(90, 24, 154, 0.5);
+    --primary-pink--20: rgba(90, 24, 154, 0.2);
+    --primary-pink--10: rgba(248, 237, 235, 1);
+
+    --primary-gray--100: rgba(108, 117, 125, 1);
+    --primary-gray--50: rgba(206, 212, 218, 1);
+    --primary-gray--20: rgba(233, 236, 239, 1);
     --text-color: #656566;
+    --primary-white: rgb(248, 249, 250);
 }
 
 
@@ -148,8 +152,8 @@ h2 {
 .actionInput_shortLink .btn.btn-outline-primary {
     font-size: 12px;
     font-weight: 600;
-    color: var(--primary-gray--20);
-    border-color: var(--primary-pink--100);
+    color: var(--primary-gray--50);
+    border-color: var(--primary-pink--50);
     padding: 0.3rem 0.5rem;
 
     transition: all 0.3s ease-in-out;
@@ -157,7 +161,7 @@ h2 {
 
 .actionInput_shortLink .btn.btn-outline-primary:hover {
     background-color: var(--primary-pink--100);
-    color: white;
+    color: var(--primary-white);
 }
 
 .actionInput_shortLink .btn-outline-primary:focus {
@@ -167,17 +171,16 @@ h2 {
 .actionInput_shortLink .btn-outline-primary:not(:disabled):not(.disabled).active,
 .actionInput_shortLink .btn-outline-primary:not(:disabled):not(.disabled):active,
 .actionInput_shortLink .show>.btn-outline-primary.dropdown-toggle {
-    color: #fff;
+    color: var(--primary-white);
     background-color: var(--primary-pink--100);
     border-color: var(--primary-pink--100);
 }
 
 .actionInput_textarea {
-    /* background-color: var(--primary-pink1--10); */
     width: 286px;
     height: 43px;
     border-radius: 8px;
-    border: 1px solid rgba(162, 82, 241, 0.15);
+    border: 1px solid var(--primary-gray--50);
     align-items: center;
     padding: 8px;
     color: var(--primary-gray--20);
@@ -223,7 +226,7 @@ h2 {
     display: flex;
     flex-direction: column;
     margin-bottom: 8px;
-    border: 1px solid rgba(162, 82, 241, 0.15);
+    border: 1px solid var(--primary-pink--100);
     border-radius: 8px;
     min-height: 3rem;
     font-size: 14px;
@@ -246,7 +249,7 @@ h2 {
     bottom: 0;
     left: 0;
     right: 100%;
-    background-color: var(--primary-pink--20);
+    background-color: var(--primary-pink--10);
 
     transition: right 0.5s ease;
 
@@ -261,8 +264,9 @@ h2 {
 } */
 
 .actionItem_container.completed .action_item_checkBox {
-    background-color: var(--primary-pink--100);
-    color: whitesmoke;
+
+    background-color: var(--primary-pink--75);
+    color: var(--primary-white);
     box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
@@ -323,8 +327,8 @@ h2 {
 }
 
 .actionItem_shortLink {
-    border: 1px solid rgba(162, 82, 241, 0.15);
-    background-color: rgba(101, 101, 102, 0.15);
+    border: 1px solid var(--primary-pink--50);
+    background-color: var(--primary-white);
     border-radius: 4px;
     display: flex;
     padding: 4px 6px;
@@ -336,8 +340,8 @@ h2 {
 }
 
 .actionItem_shortLink:hover {
-    background-color: rgba(101, 101, 102, 0.25);
-    border: 1px solid rgba(101, 101, 102, 0.3);
+    background-color: var(--primary-pink--20);
+    border: 1px solid var(--primary-pink--100);
 }
 
 .actionItem_shortLink a {
