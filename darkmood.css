@@ -1,0 +1,61 @@
+.darkmode {
+    --primary-pink--100: rgb(203, 152, 255);
+    --primary-pink--75: rgba(90, 24, 154, 0.75);
+    --primary-pink--50: rgba(206, 212, 218, 1);
+    --primary-pink--20: rgba(90, 24, 154, 0.2);
+    --primary-pink--10: rgba(248, 237, 235, 1);
+
+    --primary-gray--100: rgba(108, 117, 125, 1);
+    --primary-gray--50: rgba(206, 212, 218, 1);
+    --primary-gray--20: rgba(233, 236, 239, 1);
+    --text-color: rgb(233, 236, 239);
+    --primary-white: rgb(233, 236, 239);
+    --primary-dark: rgb(52, 58, 64);
+
+    --darkMode: rgb(244, 140, 6);
+    --button-background: rgb(233, 236, 239);
+
+    --foreground: var(--primary-gray--20);
+    --background: var(--primary-dark)
+}
+
+#checkbox {
+    opacity: 0;
+    position: absolute;
+}
+
+.label {
+    position: relative;
+    cursor: pointer;
+    background-color: var(--darkMode);
+    width: 40px;
+    border-radius: 24px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#checkbox:checked+.label .ball {
+    transform: translateX(16px);
+}
+
+.label i {
+    color: var(--button-background);
+    font-size: .8rem;
+}
+
+.ball {
+    position: absolute;
+    background-color: whitesmoke;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 4px;
+
+    transition: transform 0.2s linear;
+}
+
+.darkmode .main .row .col .actionItem_items .actionItem_container.completed .actionItem_item .action_item_content {
+    color: var(--background);
+}

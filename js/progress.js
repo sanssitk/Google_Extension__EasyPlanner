@@ -1,5 +1,5 @@
 var circle = new ProgressBar.Circle("#container", {
-    color: '#A252F1',
+    color: '--primary-pink--100',
     // This has to be the same size as the maximum width to
     // prevent clipping
     strokeWidth: 6,

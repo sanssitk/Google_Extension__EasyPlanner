@@ -1,6 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     width: 450px;
     margin: 0;
+
+    background: var(--background);
+    color: var(--foreground);
+    transition: background 0.2s linear;
 }
 
 body::-webkit-scrollbar {
@@ -27,8 +35,14 @@ h2 {
     --primary-gray--20: rgba(233, 236, 239, 1);
     --text-color: #656566;
     --primary-white: rgb(248, 249, 250);
-}
+    --primary-dark: rgb(20, 20, 20);
 
+    --darkMode: rgba(90, 24, 154, 1);
+    --button-background: rgb(244, 140, 6);
+
+    --foreground: var(--primary-pink--100);
+    --background: var(--primary-white)
+}
 
 .col {
     padding-right: 10px;
@@ -185,6 +199,7 @@ h2 {
     padding: 8px;
     color: var(--primary-gray--20);
     margin-bottom: 6px;
+    background-color: var(--primary-gray--20);
 }
 
 .actionInput_textarea input {
