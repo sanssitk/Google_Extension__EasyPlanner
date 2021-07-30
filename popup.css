@@ -213,10 +213,11 @@ h2 {
 
 .actionInput_container {
     display: flex;
+    align-items: center;
 }
 
 .actionInput_input {
-    flex: 1;
+    /* flex: 1; */
     display: flex;
     flex-direction: column;
 }
@@ -384,4 +385,9 @@ h2 {
 .actionItem_title span {
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+#addItemForm {
+    display: none;
+    opacity: 0;
 }

@@ -1,5 +1,22 @@
+let user_signedIn = false;
 let storage = chrome.storage.sync;
 let actionItemsUtils = new ActionItems();
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === "user_signed_in") {
+        user_signedIn = true;
+        sendResponse({
+            message: "success",
+            payload: user_signedIn
+        })
+    } else if (request.message === "user_signed_off") {
+        user_signedIn = false;
+        sendResponse({
+            message: "success"
+        })
+    }
+    return user_signedIn;
+})
 
 chrome.contextMenus.create({
     "id": "linkSiteMenu",

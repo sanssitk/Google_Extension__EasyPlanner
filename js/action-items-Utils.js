@@ -15,7 +15,6 @@ class ActionItems {
                 title: tab.title
             }
         }
-
         this.add(text, website, callback)
     }
 

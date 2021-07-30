@@ -4,27 +4,6 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
-//storage.clear();
-storage.get(["actionItems", "name"], (data) => {
-    getTime(new Date());
-    let items = data.actionItems;
-    let name = data.name;
-    setUsersName(name)
-    createQuickActionListener();
-    renderActionItems(items);
-    createNameDialogListner();
-    createUpdateNameListener()
-    actionItemsUtils.setProgress();
-    chrome.storage.onChanged.addListener(() => {
-        actionItemsUtils.setProgress();
-    });
-})
-
-const setUsersName = (userName) => {
-    USERNAME = userName ? userName : "Add your name";
-    document.querySelector(".greeting__name").innerText = USERNAME;
-}
-
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
@@ -204,3 +183,5 @@ const createLinkContainer = (url, fav_icon, title) => {
 
     return mainLinkEle;
 }
+
+
