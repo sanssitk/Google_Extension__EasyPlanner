@@ -70,6 +70,10 @@ const logIn = () => {
 const signOff = () => {
     firebase.auth().signOut().then(() => {
         $('#updateNameModal').modal('hide')
+        document.querySelector(".profile_image").style.backgroundImage = `url("./images/Logo128.png")`;
+        let inputTextArea = document.querySelector("#addItemForm");
+        inputTextArea.style.display = "hidden";
+        inputTextArea.style.opacity = 0;
         showSignOffItems();
     }).catch((error) => {
         console.log(error)
