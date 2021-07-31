@@ -23,7 +23,12 @@ const showSignInItems = (result) => {
     chrome.storage.sync.get(["actionItems", "name"], (data) => {
         getTime(new Date());
         let items = data.actionItems;
-        let fName = result.displayName.split(" ")[0];
+        let fName = "";
+        if (data.name) {
+            fName = data.name
+        } else {
+            fName = result.displayName.split(" ")[0];
+        }
         setUsersName(fName)
         userProfileImage = result.photoURL;
         document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
