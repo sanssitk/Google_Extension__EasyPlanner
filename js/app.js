@@ -183,5 +183,3 @@ const createLinkContainer = (url, fav_icon, title) => {
 
     return mainLinkEle;
 }
-
-

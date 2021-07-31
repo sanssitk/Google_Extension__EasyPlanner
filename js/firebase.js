@@ -12,75 +12,83 @@ firebase.initializeApp(firebaseConfig);
 
 let provider = new firebase.auth.GoogleAuthProvider();
 
-const signIn = () => {
-    firebase.auth().signInWithPopup(provider).then((result) => {
-        // The signed-in user info.
-        var user = result.user;
-        chrome.runtime.sendMessage({
-            message: "user_signed_in"
-        }, (res) => {
-            if (res.message == "success" && res.payload) {
-                storage.get(["actionItems", "name"], (data) => {
-                    getTime(new Date());
-                    let items = data.actionItems;
-                    let name = result.user.displayName;
-                    createQuickActionListener();
-                    renderActionItems(items);
-                    actionItemsUtils.setProgress();
-                    chrome.storage.onChanged.addListener(() => {
-                        actionItemsUtils.setProgress();
-                    });
-                })
-            }
-        })
-    })
-
-}
-
-const signOff = () => {
-    chrome.runtime.sendMessage({
-        message: "user_signed_off"
-    }, (res) => {
-        if (res.message == "success") {
-            storage.get(["actionItems", "name"], (data) => {
-                getTime(new Date());
-                let items = data.actionItems;
-                let name = data.name;
-                setUsersName(name)
-                createQuickActionListener();
-                renderActionItems(items);
-                actionItemsUtils.setProgress();
-                chrome.storage.onChanged.addListener(() => {
-                    actionItemsUtils.setProgress();
-                });
-
-            })
-        }
-    })
-}
+//storage.clear();
 
 const setUsersName = (userName) => {
     USERNAME = userName ? userName : "Sign In";
     document.querySelector(".greeting__name").innerText = USERNAME;
 }
 
-let greetingTitle = document.querySelector(".greeting__title");
-greetingTitle.addEventListener("click", () => {
+const showSignInItems = (result) => {
+    chrome.storage.sync.get(["actionItems", "name"], (data) => {
+        getTime(new Date());
+        let items = data.actionItems;
+        let fName = result.displayName.split(" ")[0];
+        setUsersName(fName)
+        userProfileImage = result.photoURL;
+        document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
+        createQuickActionListener();
+        renderActionItems(items);
+        createNameDialogListner();
+        createUpdateNameListener()
+        actionItemsUtils.setProgress();
+        chrome.storage.onChanged.addListener(() => {
+            actionItemsUtils.setProgress();
+        });
+        let inputTextArea = document.querySelector("#addItemForm");
+        inputTextArea.style.display = "block";
+        inputTextArea.style.opacity = 1;
+    })
+}
+
+const showSignOffItems = () => {
+    chrome.storage.sync.get(["actionItems", "name"], (data) => {
+        getTime(new Date());
+        let items = data.actionItems;
+        createQuickActionListener();
+        renderActionItems(items);
+        actionItemsUtils.setProgress();
+        chrome.storage.onChanged.addListener(() => {
+            actionItemsUtils.setProgress();
+        });
+    })
+}
+
+const logIn = () => {
+    firebase.auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+            showSignInItems(result);
+        }).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+        });
+}
+
+const signOff = () => {
+    firebase.auth().signOut().then(() => {
+        $('#updateNameModal').modal('hide')
+        showSignOffItems();
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+const isSignInSignOut = () => {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-            userFName = user.displayName.split(" ")[0];
-            userProfileImage = user.photoURL;
-            document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
-            setUsersName(userFName);
-            createNameDialogListner();
-            createUpdateNameListener();
-            let inputTextArea = document.querySelector("#addItemForm");
-            inputTextArea.style.display = "block";
-            inputTextArea.style.opacity = 1;
+            showSignInItems(user);
+            document.querySelector("#signOff").addEventListener("click", signOff)
         } else {
-            signIn();
+            showSignOffItems();
+            setUsersName("Sign In");
+            document.querySelector(".greeting__title").addEventListener("click", logIn)
         }
     })
-})
+}
 
-signOff();
+
+
+isSignInSignOut();
