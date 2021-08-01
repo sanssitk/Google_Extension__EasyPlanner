@@ -9,41 +9,103 @@ const firebaseConfig = {
 
 // Initializing firebase with config
 firebase.initializeApp(firebaseConfig);
+let db = firebase.firestore();
 
 let provider = new firebase.auth.GoogleAuthProvider();
 
 //storage.clear();
+
+// Upload Data ////////////////////////////////////////////////////////////////////////////////////////////////
+// db.collection("items").add({
+//     first: "Ada",
+//     last: "Lovelace",
+//     born: 1815
+// })
+// .then((docRef) => {
+//     console.log("Document written with ID: ", docRef.id);
+// })
+// .catch((error) => {
+//     console.error("Error adding document: ", error);
+// });
+
+
+// Read data ////////////////////////////////////////////////////////////////////////////////////////////////
+db.collection("items").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+    });
+});
 
 const setUsersName = (userName) => {
     USERNAME = userName ? userName : "Sign In";
     document.querySelector(".greeting__name").innerText = USERNAME;
 }
 
-const showSignInItems = (result) => {
-    chrome.storage.sync.get(["actionItems", "name"], (data) => {
-        getTime(new Date());
-        let items = data.actionItems;
-        let fName = "";
-        if (data.name) {
-            fName = data.name
-        } else {
-            fName = result.displayName.split(" ")[0];
-        }
-        setUsersName(fName)
-        userProfileImage = result.photoURL;
-        document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
-        createQuickActionListener();
-        renderActionItems(items);
-        createNameDialogListner();
-        createUpdateNameListener()
-        actionItemsUtils.setProgress();
-        chrome.storage.onChanged.addListener(() => {
+const showSignInItems = (userInfo) => {
+    if (userInfo) {
+        var uid = userInfo.uid;
+        db.collection("actionItems").doc(uid).get().then((datas) => {
+            let data = datas.data();
+            getTime(new Date());
+            let items = data.actionItems;
+            let fName = "";
+            if (data.name) {
+                fName = data.name
+            } else {
+                fName = userInfo.displayName.split(" ")[0];
+            }
+            setUsersName(fName)
+            userProfileImage = userInfo.photoURL;
+            document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
+            createQuickActionListener();
+            renderActionItems(items);
+            createNameDialogListner();
+            createUpdateNameListener()
             actionItemsUtils.setProgress();
+            chrome.storage.onChanged.addListener(() => {
+                actionItemsUtils.setProgress();
+            });
+            let inputTextArea = document.querySelector("#addItemForm");
+            inputTextArea.style.display = "block";
+            inputTextArea.style.opacity = 1;
         });
-        let inputTextArea = document.querySelector("#addItemForm");
-        inputTextArea.style.display = "block";
-        inputTextArea.style.opacity = 1;
-    })
+    }
+
+    // db.collection("actionItems").doc(uid).set({
+    //         actionItems: actionItem,
+    //     }).then((docRef) => {
+    //         console.log("Document written with ID: ", docRef.id);
+    //     })
+    //     .catch((error) => {
+    //         console.error("Error adding document: ", error);
+    //     });
+
+
+
+    // chrome.storage.sync.get(["actionItems", "name"], (data) => {
+    //     getTime(new Date());
+    //     let items = data.actionItems;
+    //     let fName = "";
+    //     if (data.name) {
+    //         fName = data.name
+    //     } else {
+    //         fName = userInfo.displayName.split(" ")[0];
+    //     }
+    //     setUsersName(fName)
+    //     userProfileImage = userInfo.photoURL;
+    //     document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
+    //     createQuickActionListener();
+    //     renderActionItems(items);
+    //     createNameDialogListner();
+    //     createUpdateNameListener()
+    //     actionItemsUtils.setProgress();
+    //     chrome.storage.onChanged.addListener(() => {
+    //         actionItemsUtils.setProgress();
+    //     });
+    //     let inputTextArea = document.querySelector("#addItemForm");
+    //     inputTextArea.style.display = "block";
+    //     inputTextArea.style.opacity = 1;
+    // })
 }
 
 const showSignOffItems = () => {
@@ -62,8 +124,8 @@ const showSignOffItems = () => {
 const logIn = () => {
     firebase.auth()
         .signInWithPopup(provider)
-        .then((result) => {
-            showSignInItems(result);
+        .then((user) => {
+            showSignInItems(user);
         }).catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -80,6 +142,7 @@ const signOff = () => {
         inputTextArea.style.display = "hidden";
         inputTextArea.style.opacity = 0;
         showSignOffItems();
+        window.close();
     }).catch((error) => {
         console.log(error)
     });

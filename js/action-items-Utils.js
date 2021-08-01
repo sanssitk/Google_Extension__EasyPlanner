@@ -26,6 +26,28 @@ class ActionItems {
             completed: null,
             website: website
         }
+        // db.collection("actionItem").get().then((data) => {
+        //     let items = data.actionItems;
+        //     if (!items) {
+        //         items = [actionItem]
+        //     } else {
+        //         items.push(actionItem)
+        //     }
+        //     data.forEach((doc) => {
+        //         db.collection("items").add({
+        //                 actionItem: actionItem
+        //             })
+        //             .then((docRef) => {
+        //                 console.log("Document written with ID: ", docRef.id);
+        //             })
+        //             .catch((error) => {
+        //                 console.error("Error adding document: ", error);
+        //             });
+        //     });
+        // });
+
+
+
         chrome.storage.sync.get(["actionItems"], (data) => {
             let items = data.actionItems;
             if (!items) {
