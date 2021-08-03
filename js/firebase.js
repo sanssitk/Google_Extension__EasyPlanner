@@ -24,20 +24,25 @@ const setUsersName = (userName) => {
 const showSignInItems = (userInfo) => {
     if (userInfo) {
         var uid = userInfo.uid;
-        chrome.storage.sync.get(["actionItems", "name"], (data) => {
+        db.doc(uid).get().then((doc) => {
+            let items = doc.data();
             getTime(new Date());
-            let items = data.actionItems;
-            let fName = "";
-            if (data.name) {
-                fName = data.name
-            } else {
-                fName = userInfo.displayName.split(" ")[0];
-            }
-            setUsersName(fName)
+            chrome.storage.sync.get(["actionItems", "name"], (data) => {
+                let fName = "";
+                if (data.name && items) {
+                    fName = data.name
+                    setUsersName(fName)
+                } else {
+                    fName = userInfo.displayName.split(" ")[0];
+                    setUsersName(fName)
+                }
+            })
             userProfileImage = userInfo.photoURL;
             document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
             createQuickActionListener();
-            renderActionItems(items);
+            if (items) {
+                renderActionItems(items)
+            }
             createNameDialogListner();
             createUpdateNameListener()
             actionItemsUtils.setProgress();
@@ -56,7 +61,9 @@ const showSignOffItems = () => {
         getTime(new Date());
         let items = data.actionItems;
         createQuickActionListener();
-        renderActionItems(items);
+        if (items) {
+            renderActionItems(items)
+        }
         actionItemsUtils.setProgress();
         chrome.storage.onChanged.addListener(() => {
             actionItemsUtils.setProgress();

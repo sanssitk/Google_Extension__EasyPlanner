@@ -7,16 +7,29 @@ let actionItemsUtils = new ActionItems();
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    const filteredItems = actionItems.filter((item) => {
-        if (item.completed) {
-            const completedDate = new Date(item.completed)
-            if (completedDate < currentDate) {
-                return false;
+    if (userUid) {
+        const filteredItems = actionItems.actionItem.filter((item) => {
+            if (item.completed) {
+                const completedDate = new Date(item.completed)
+                if (completedDate < currentDate) {
+                    return false;
+                }
             }
-        }
-        return true;
-    })
-    return filteredItems;
+            return true;
+        })
+        return filteredItems;
+    } else {
+        const filteredItems = actionItems.filter((item) => {
+            if (item.completed) {
+                const completedDate = new Date(item.completed)
+                if (completedDate < currentDate) {
+                    return false;
+                }
+            }
+            return true;
+        })
+        return filteredItems;
+    }
 }
 
 const renderActionItems = (items) => {
@@ -44,7 +57,6 @@ const handleUpdateName = () => {
     if (inputText) {
         // save the name
         actionItemsUtils.saveName(inputText, () => {
-            // set the user's name on frontend
             setUsersName(inputText);
             $('#updateNameModal').modal('hide')
         })

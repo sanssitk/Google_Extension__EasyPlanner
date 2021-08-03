@@ -26,51 +26,62 @@ class ActionItems {
             completed: null,
             website: website
         }
-        db.doc(userUid).get().then(doc => {
-            let items = doc.data();
-            if (!items) {
-                items = [actionItem]
-                db.doc(userUid).set({
-                    actionItem: items
+        if (userUid) {
+            db.doc(userUid).get().then(doc => {
+                    let items = doc.data();
+                    if (!items) {
+                        items = [actionItem]
+                        db.doc(userUid).set({
+                            actionItem: items
+                        })
+                    } else {
+                        db.doc(userUid).update({
+                            actionItem: firebase.firestore.FieldValue.arrayUnion(actionItem)
+                        })
+                    }
                 })
-            } else {
-                db.doc(userUid).update({
-                    actionItem: firebase.firestore.FieldValue.arrayUnion(actionItem)
-                })
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-
-
-
-        // // get from local:
-        // chrome.storage.sync.get(["actionItems"], (data) => {
-        //     let items = data.actionItems;
-        //     if (!items) {
-        //         items = [actionItem]
-        //     } else {
-        //         items.push(actionItem)
-        //     }
-        //     chrome.storage.sync.set({
-        //         actionItems: items
-        //     }, () => {
-        //         callback(actionItem)
-        //     });
-        // });
+                .then(() => callback(actionItem))
+                .catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+        } else {
+            chrome.storage.sync.get(["actionItems"], (data) => {
+                let items = data.actionItems;
+                if (!items) {
+                    items = [actionItem]
+                } else {
+                    items.push(actionItem)
+                }
+                chrome.storage.sync.set({
+                    actionItems: items
+                }, () => {
+                    callback(actionItem)
+                });
+            });
+        }
     }
 
     remove = (id, callback) => {
-        chrome.storage.sync.get(["actionItems"], (data) => {
-            let items = data.actionItems;
-            let foundItemIndex = items.findIndex((item) => item.id == id);
-            if (foundItemIndex >= 0) {
-                items.splice(foundItemIndex, 1)
-                chrome.storage.sync.set({
-                    actionItems: items
-                }, callback)
-            }
-        })
+        // Atomically remove a region from the "regions"array field.
+        if (userUid) {
+            let item = db.where("doc", "==", userUid).where("id", "==", id);
+            console.log(item.data())
+            // db.doc(userUid).update({
+            //         actionItem: firebase.firestore.FieldValue.arrayRemove(item)
+            //     })
+            //     .then(() => callback);
+        } else {
+            chrome.storage.sync.get(["actionItems"], (data) => {
+                let items = data.actionItems;
+                let foundItemIndex = items.findIndex((item) => item.id == id);
+                if (foundItemIndex >= 0) {
+                    items.splice(foundItemIndex, 1)
+                    chrome.storage.sync.set({
+                        actionItems: items
+                    }, callback)
+                }
+            })
+        }
     }
 
     markUnmarkCompleted(id, completedStatus) {
