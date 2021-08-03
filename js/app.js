@@ -4,39 +4,26 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
-// const filterActionItem = (actionItems) => {
-//     const currentDate = new Date();
-//     currentDate.setHours(0, 0, 0, 0);
-//     const filteredItems = actionItems.filter((item) => {
-//         if (item.completed) {
-//             const completedDate = new Date(item.completed)
-//             if (completedDate < currentDate) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     })
-//     return filteredItems;
-// }
+const filterActionItem = (actionItems) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const filteredItems = actionItems.filter((item) => {
+        if (item.completed) {
+            const completedDate = new Date(item.completed)
+            if (completedDate < currentDate) {
+                return false;
+            }
+        }
+        return true;
+    })
+    return filteredItems;
+}
+
 const renderActionItems = (items) => {
-    // const filtedItems = filterActionItem(items)
-    // filtedItems.map(item => {
-    //     renderActionItem(item.text, item.id, item.completed, item.website)
-    // })
-
-    renderActionItem(items.text, items.id, items.completed, items.website)
-
-    // db.collection("actionItems").doc(uid).set({
-    //         actionItems: items
-    //     }).then((docRef) => {
-    //         console.log("Document written with ID: ", docRef.id);
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error adding document: ", error);
-    //     });
-    // storage.set({
-    //     actionItems: filtedItems
-    // })
+    const filtedItems = filterActionItem(items)
+    filtedItems.map(item => {
+        renderActionItem(item.text, item.id, item.completed, item.website)
+    })
 }
 
 const createNameDialogListner = () => {

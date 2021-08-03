@@ -1,3 +1,5 @@
+let userUid = null;
+
 const firebaseConfig = {
     apiKey: "AIzaSyB7vK6OzqkJqREIE6HVqQv02D2byocsC0I",
     authDomain: "chrome-todolist-ext.firebaseapp.com",
@@ -9,33 +11,11 @@ const firebaseConfig = {
 
 // Initializing firebase with config
 firebase.initializeApp(firebaseConfig);
-let db = firebase.firestore();
+let db = firebase.firestore().collection("actionItems");
 
 let provider = new firebase.auth.GoogleAuthProvider();
 
 //storage.clear();
-
-// Upload Data ////////////////////////////////////////////////////////////////////////////////////////////////
-// db.collection("items").add({
-//     first: "Ada",
-//     last: "Lovelace",
-//     born: 1815
-// })
-// .then((docRef) => {
-//     console.log("Document written with ID: ", docRef.id);
-// })
-// .catch((error) => {
-//     console.error("Error adding document: ", error);
-// });
-
-
-// Read data ////////////////////////////////////////////////////////////////////////////////////////////////
-db.collection("items").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-    });
-});
-
 const setUsersName = (userName) => {
     USERNAME = userName ? userName : "Sign In";
     document.querySelector(".greeting__name").innerText = USERNAME;
@@ -44,8 +24,7 @@ const setUsersName = (userName) => {
 const showSignInItems = (userInfo) => {
     if (userInfo) {
         var uid = userInfo.uid;
-        db.collection("actionItems").doc(uid).get().then((datas) => {
-            let data = datas.data();
+        chrome.storage.sync.get(["actionItems", "name"], (data) => {
             getTime(new Date());
             let items = data.actionItems;
             let fName = "";
@@ -68,44 +47,8 @@ const showSignInItems = (userInfo) => {
             let inputTextArea = document.querySelector("#addItemForm");
             inputTextArea.style.display = "block";
             inputTextArea.style.opacity = 1;
-        });
+        })
     }
-
-    // db.collection("actionItems").doc(uid).set({
-    //         actionItems: actionItem,
-    //     }).then((docRef) => {
-    //         console.log("Document written with ID: ", docRef.id);
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error adding document: ", error);
-    //     });
-
-
-
-    // chrome.storage.sync.get(["actionItems", "name"], (data) => {
-    //     getTime(new Date());
-    //     let items = data.actionItems;
-    //     let fName = "";
-    //     if (data.name) {
-    //         fName = data.name
-    //     } else {
-    //         fName = userInfo.displayName.split(" ")[0];
-    //     }
-    //     setUsersName(fName)
-    //     userProfileImage = userInfo.photoURL;
-    //     document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
-    //     createQuickActionListener();
-    //     renderActionItems(items);
-    //     createNameDialogListner();
-    //     createUpdateNameListener()
-    //     actionItemsUtils.setProgress();
-    //     chrome.storage.onChanged.addListener(() => {
-    //         actionItemsUtils.setProgress();
-    //     });
-    //     let inputTextArea = document.querySelector("#addItemForm");
-    //     inputTextArea.style.display = "block";
-    //     inputTextArea.style.opacity = 1;
-    // })
 }
 
 const showSignOffItems = () => {
@@ -151,6 +94,7 @@ const signOff = () => {
 const isSignInSignOut = () => {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+            userUid = user.uid;
             showSignInItems(user);
             document.querySelector("#signOff").addEventListener("click", signOff)
         } else {
@@ -164,3 +108,20 @@ const isSignInSignOut = () => {
 
 
 isSignInSignOut();
+
+// Add a new document with a generated id.
+// db.collection("cities").add({
+//         name: "Tokyo",
+//         country: "Japan"
+//     })
+//     .then((docRef) => {
+//         console.log("Document written with ID: ", docRef.id);
+//     })
+//     .catch((error) => {
+//         console.error("Error adding document: ", error);
+//     });
+
+// Atomically remove a region from the "regions" array field.
+// washingtonRef.update({
+//     regions: firebase.firestore.FieldValue.arrayRemove("east_coast")
+// });

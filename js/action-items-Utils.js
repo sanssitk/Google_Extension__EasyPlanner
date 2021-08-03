@@ -26,41 +26,38 @@ class ActionItems {
             completed: null,
             website: website
         }
-        // db.collection("actionItem").get().then((data) => {
+        db.doc(userUid).get().then(doc => {
+            let items = doc.data();
+            if (!items) {
+                items = [actionItem]
+                db.doc(userUid).set({
+                    actionItem: items
+                })
+            } else {
+                db.doc(userUid).update({
+                    actionItem: firebase.firestore.FieldValue.arrayUnion(actionItem)
+                })
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+
+
+        // // get from local:
+        // chrome.storage.sync.get(["actionItems"], (data) => {
         //     let items = data.actionItems;
         //     if (!items) {
         //         items = [actionItem]
         //     } else {
         //         items.push(actionItem)
         //     }
-        //     data.forEach((doc) => {
-        //         db.collection("items").add({
-        //                 actionItem: actionItem
-        //             })
-        //             .then((docRef) => {
-        //                 console.log("Document written with ID: ", docRef.id);
-        //             })
-        //             .catch((error) => {
-        //                 console.error("Error adding document: ", error);
-        //             });
+        //     chrome.storage.sync.set({
+        //         actionItems: items
+        //     }, () => {
+        //         callback(actionItem)
         //     });
         // });
-
-
-
-        chrome.storage.sync.get(["actionItems"], (data) => {
-            let items = data.actionItems;
-            if (!items) {
-                items = [actionItem]
-            } else {
-                items.push(actionItem)
-            }
-            chrome.storage.sync.set({
-                actionItems: items
-            }, () => {
-                callback(actionItem)
-            });
-        });
     }
 
     remove = (id, callback) => {
