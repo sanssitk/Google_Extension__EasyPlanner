@@ -132,3 +132,10 @@ isSignInSignOut();
 // washingtonRef.update({
 //     regions: firebase.firestore.FieldValue.arrayRemove("east_coast")
 // });
+
+
+//https://firebase.google.com/docs/firestore/query-data/listen
+// db.collection("cities").doc("SF")
+//     .onSnapshot((doc) => {
+//         console.log("Current data: ", doc.data());
+//     });
