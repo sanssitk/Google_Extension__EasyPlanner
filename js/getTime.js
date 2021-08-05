@@ -30,12 +30,8 @@ const getTime = (date) => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    let shiftContiner = `   
-    
-                    
-                  
-
-        <div class="info_container_time">            
+    let shiftContiner = `
+    <div class="info_container_time">            
             <img id="greeting__image" src="${greetingImg}" />           
             <span>${hrs}:${minitues()} ${ampm}</span>
         </div>      

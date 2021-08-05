@@ -1,3 +1,4 @@
+let user;
 let userUid = null;
 
 const firebaseConfig = {
@@ -13,6 +14,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 let db = firebase.firestore().collection("actionItems");
 
+let dumpDB = firebase.firestore();
+
 let provider = new firebase.auth.GoogleAuthProvider();
 
 //storage.clear();
@@ -23,36 +26,41 @@ const setUsersName = (userName) => {
 
 const showSignInItems = (userInfo) => {
     if (userInfo) {
-        var uid = userInfo.uid;
-        db.doc(uid).get().then((doc) => {
-            let items = doc.data();
-            getTime(new Date());
-            chrome.storage.sync.get(["actionItems", "name"], (data) => {
-                let fName = "";
-                if (data.name && items) {
-                    fName = data.name
-                    setUsersName(fName)
-                } else {
-                    fName = userInfo.displayName.split(" ")[0];
-                    setUsersName(fName)
-                }
-            })
-            userProfileImage = userInfo.photoURL;
-            document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
-            createQuickActionListener();
-            if (items) {
-                renderActionItems(items)
+        getTime(new Date());
+        userProfileImage = userInfo.photoURL;
+        document.querySelector(".profile_image").style.backgroundImage = `url(${userProfileImage})`;
+        createQuickActionListener();
+        createNameDialogListner();
+        createUpdateNameListener()
+        let inputTextArea = document.querySelector("#addItemForm");
+        inputTextArea.style.display = "block";
+        inputTextArea.style.opacity = 1;
+        chrome.storage.sync.get(["actionItems", "name"], (data) => {
+            let fName = "";
+            if (data.name) {
+                fName = data.name
+                setUsersName(fName)
+            } else {
+                fName = userInfo.displayName.split(" ")[0];
+                setUsersName(fName)
             }
-            createNameDialogListner();
-            createUpdateNameListener()
-            actionItemsUtils.setProgress();
-            chrome.storage.onChanged.addListener(() => {
-                actionItemsUtils.setProgress();
-            });
-            let inputTextArea = document.querySelector("#addItemForm");
-            inputTextArea.style.display = "block";
-            inputTextArea.style.opacity = 1;
         })
+        dumpDB.collection(userUid)
+            .onSnapshot((snapshot) => {
+                let changes = snapshot.docChanges();
+                actionItemsUtils.setProgress();
+                changes.forEach((change) => {
+                    if (change.type == "added") {
+                        renderActionItems(change.doc.data())
+
+                    } else if (change.type == "removed") {
+                        let id = change.doc.data().id;
+                        let jEle = $(`div[id="${id}"]`);
+                        animateDeleteItem(jEle);
+                    }
+                })
+
+            })
     }
 }
 
@@ -74,8 +82,9 @@ const showSignOffItems = () => {
 const logIn = () => {
     firebase.auth()
         .signInWithPopup(provider)
-        .then((user) => {
-            showSignInItems(user);
+        .then((userInfo) => {
+            showSignInItems(userInfo);
+            user = userInfo;
         }).catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -99,12 +108,15 @@ const signOff = () => {
 }
 
 const isSignInSignOut = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            userUid = user.uid;
+    firebase.auth().onAuthStateChanged((userInfo) => {
+        if (userInfo) {
+            userUid = userInfo.uid;
+            user = userInfo;
             showSignInItems(user);
             document.querySelector("#signOff").addEventListener("click", signOff)
         } else {
+            userUid = null;
+            user = null;
             showSignOffItems();
             setUsersName("Sign In");
             document.querySelector(".greeting__title").addEventListener("click", logIn)
@@ -112,30 +124,4 @@ const isSignInSignOut = () => {
     })
 }
 
-
-
 isSignInSignOut();
-
-// Add a new document with a generated id.
-// db.collection("cities").add({
-//         name: "Tokyo",
-//         country: "Japan"
-//     })
-//     .then((docRef) => {
-//         console.log("Document written with ID: ", docRef.id);
-//     })
-//     .catch((error) => {
-//         console.error("Error adding document: ", error);
-//     });
-
-// Atomically remove a region from the "regions" array field.
-// washingtonRef.update({
-//     regions: firebase.firestore.FieldValue.arrayRemove("east_coast")
-// });
-
-
-//https://firebase.google.com/docs/firestore/query-data/listen
-// db.collection("cities").doc("SF")
-//     .onSnapshot((doc) => {
-//         console.log("Current data: ", doc.data());
-//     });

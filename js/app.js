@@ -4,41 +4,6 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
-const filterActionItem = (actionItems) => {
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    if (userUid) {
-        const filteredItems = actionItems.actionItem.filter((item) => {
-            if (item.completed) {
-                const completedDate = new Date(item.completed)
-                if (completedDate < currentDate) {
-                    return false;
-                }
-            }
-            return true;
-        })
-        return filteredItems;
-    } else {
-        const filteredItems = actionItems.filter((item) => {
-            if (item.completed) {
-                const completedDate = new Date(item.completed)
-                if (completedDate < currentDate) {
-                    return false;
-                }
-            }
-            return true;
-        })
-        return filteredItems;
-    }
-}
-
-const renderActionItems = (items) => {
-    const filtedItems = filterActionItem(items)
-    filtedItems.map(item => {
-        renderActionItem(item.text, item.id, item.completed, item.website)
-    })
-}
-
 const createNameDialogListner = () => {
     let greetingTitle = document.querySelector(".greeting__title");
     greetingTitle.addEventListener("click", () => {
@@ -78,14 +43,12 @@ async function getCurrentTabl() {
 const handleQuickActionListener = (e) => {
     const text = e.target.getAttribute("data-text");
     const id = e.target.getAttribute("data-id");
-
     getCurrentTabl().then((tab) => {
         actionItemsUtils.addQuickActionItem(id, text, tab, (actionItem) => {
             renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
         })
     })
 }
-
 const createQuickActionListener = () => {
     let buttons = document.querySelectorAll(".quickButton")
     buttons.forEach((button) => {
@@ -93,16 +56,44 @@ const createQuickActionListener = () => {
     })
 }
 
-addItemForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    let itemText = addItemForm.elements.namedItem("itemText").value;
-    if (itemText) {
-        actionItemsUtils.add(itemText, null, (actionItem) => {
-            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
-            addItemForm.elements.namedItem("itemText").value = "";
-        });
+const filterActionItem = (actionItems) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    if (userUid) {
+        const filteredItems = actionItems.actionItem.filter((item) => {
+            if (item.completed) {
+                const completedDate = new Date(item.completed)
+                if (completedDate < currentDate) {
+                    return false;
+                }
+            }
+            return true;
+        })
+        return filteredItems;
+    } else {
+        const filteredItems = actionItems.filter((item) => {
+            if (item.completed) {
+                const completedDate = new Date(item.completed)
+                if (completedDate < currentDate) {
+                    return false;
+                }
+            }
+            return true;
+        })
+        return filteredItems;
     }
-})
+}
+
+const renderActionItems = (items) => {
+    if (userUid) {
+        renderActionItem(items.text, items.id, items.completed, items.website)
+    } else {
+        const filtedItems = filterActionItem(items)
+        filtedItems.map(item => {
+            renderActionItem(item.text, item.id, item.completed, item.website)
+        })
+    }
+}
 
 const handelCheckBoxClicked = (e) => {
     const parentEle = e.target.parentElement.parentElement;
@@ -117,13 +108,28 @@ const handelCheckBoxClicked = (e) => {
 
 const handelDeleteClicked = (e) => {
     const parentEle = e.target.parentElement.parentElement;
-    if (parentEle.id) {
+    if (parentEle.id && !userUid) {
         let jEle = $(`div[id="${parentEle.id}"]`);
         actionItemsUtils.remove(parentEle.id, () => {
             animateDeleteItem(jEle);
         });
+    } else if (parentEle.id && userUid) {
+        actionItemsUtils.remove(parentEle.id)
     }
 }
+
+addItemForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let itemText = addItemForm.elements.namedItem("itemText").value;
+    if (itemText && userUid) {
+        showSignInItems(user)
+    } else if (itemText && !userUid) {
+        actionItemsUtils.add(itemText, null, (actionItem) => {
+            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
+            addItemForm.elements.namedItem("itemText").value = "";
+        });
+    }
+})
 
 const renderActionItem = (text, id, completed, website = null, duration = 300) => {
     let element = document.createElement("div");
@@ -159,6 +165,22 @@ const renderActionItem = (text, id, completed, website = null, duration = 300) =
     animateAddItems(jEle, duration);
 }
 
+const createLinkContainer = (url, fav_icon, title) => {
+    let mainLinkEle = document.createElement("div");
+    mainLinkEle.classList.add("actionItem_shortLink");
+    mainLinkEle.innerHTML = `
+        <a href="${url}" target="_blank">
+            <div class="actionItem_favIcon">
+                <img src="${fav_icon}" alt="">
+            </div>
+            <div class="actionItem_title">
+                <span>${title}</span>
+            </div>
+        </a> `
+
+    return mainLinkEle;
+}
+
 const animateAddItems = (jEle, duration) => {
     jEle.css({
         marginTop: `-46px`,
@@ -176,20 +198,4 @@ const animateDeleteItem = (jEle) => {
     }, 450, () => {
         jEle.remove();
     })
-}
-
-const createLinkContainer = (url, fav_icon, title) => {
-    let mainLinkEle = document.createElement("div");
-    mainLinkEle.classList.add("actionItem_shortLink");
-    mainLinkEle.innerHTML = `
-        <a href="${url}" target="_blank">
-            <div class="actionItem_favIcon">
-                <img src="${fav_icon}" alt="">
-            </div>
-            <div class="actionItem_title">
-                <span>${title}</span>
-            </div>
-        </a> `
-
-    return mainLinkEle;
 }

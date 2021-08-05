@@ -27,23 +27,8 @@ class ActionItems {
             website: website
         }
         if (userUid) {
-            db.doc(userUid).get().then(doc => {
-                    let items = doc.data();
-                    if (!items) {
-                        items = [actionItem]
-                        db.doc(userUid).set({
-                            actionItem: items
-                        })
-                    } else {
-                        db.doc(userUid).update({
-                            actionItem: firebase.firestore.FieldValue.arrayUnion(actionItem)
-                        })
-                    }
-                })
-                .then(() => callback(actionItem))
-                .catch((error) => {
-                    console.log("Error getting document:", error);
-                });
+            dumpDB.collection(userUid).doc(actionItem.id)
+                .set(actionItem)
         } else {
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;
@@ -62,35 +47,25 @@ class ActionItems {
     }
 
     remove = (id, callback) => {
-        var itemClicked = db.doc(userUid);
-        itemClicked.update({
-            actionItem: firebase.firestore.FieldValue.delete(id)
-        })
-        // Remove the 'capital' field from the document
-        // db.doc(userUid).get().then(doc => {
-        //     let items = doc.data();
-        //     if (items) {
-        //         let item = {
-        //             items
-        //         }
-        //         return item;
-        //     }            
-        // });
-
-
-
-        // chrome.storage.sync.get(["actionItems"], (data) => {
-        //     let items = data.actionItems;
-        //     let foundItemIndex = items.findIndex((item) => item.id == id);
-        //     if (foundItemIndex >= 0) {
-        //         items.splice(foundItemIndex, 1)
-        //         chrome.storage.sync.set({
-        //             actionItems: items
-        //         }, callback)
-        //     }
-        // })
+        if (userUid) {
+            dumpDB.collection(userUid).doc(id)
+                .delete()
+                .catch((error) => {
+                    console.error("Error removing document: ", error);
+                });
+        } else {
+            chrome.storage.sync.get(["actionItems"], (data) => {
+                let items = data.actionItems;
+                let foundItemIndex = items.findIndex((item) => item.id == id);
+                if (foundItemIndex >= 0) {
+                    items.splice(foundItemIndex, 1)
+                    chrome.storage.sync.set({
+                        actionItems: items
+                    }, callback)
+                }
+            })
+        }
     }
-
 
     markUnmarkCompleted(id, completedStatus) {
         chrome.storage.sync.get(["actionItems"], (data) => {
@@ -107,17 +82,22 @@ class ActionItems {
     }
 
     setProgress = () => {
-        chrome.storage.sync.get(["actionItems"], (data) => {
-            let items = data.actionItems;
-            let completedItems;
-            completedItems = items.filter(item => item.completed)
-            let progress = 0;
-            if (items.length > 0) {
-                progress = completedItems.length / items.length;
-            }
-            this.setBrowserBadge(items.length - completedItems.length);
-            if (typeof window.circle !== "undefined") circle.animate(progress); // Number from 0.0 to 1.0    
-        })
+        if (userUid) {
+            console.log("Progress")
+        } else {
+            chrome.storage.sync.get(["actionItems"], (data) => {
+                let items = data.actionItems;
+                let completedItems;
+                completedItems = items.filter(item => item.completed)
+                let progress = 0;
+                if (items.length > 0) {
+                    progress = completedItems.length / items.length;
+                }
+                this.setBrowserBadge(items.length - completedItems.length);
+                if (typeof window.circle !== "undefined") circle.animate(progress); // Number from 0.0 to 1.0    
+            })
+        }
+
     }
 
     setBrowserBadge(todoItems) {
