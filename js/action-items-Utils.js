@@ -100,12 +100,13 @@ class ActionItems {
                             let completedItems = com.size;
                             if (totalItems > 0) {
                                 let progress = completedItems / totalItems;
-                                circle.animate(progress)
+                                this.setBrowserBadge(totalItems - completedItems);
+                                if (typeof window.circle !== "undefined") circle.animate(progress)
                             }
                         })
                 })
 
-        } else {
+        } else if (!userUid) {
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;
                 let completedItems;
@@ -118,7 +119,6 @@ class ActionItems {
                 if (typeof window.circle !== "undefined") circle.animate(progress); // Number from 0.0 to 1.0    
             })
         }
-
     }
 
     setBrowserBadge(todoItems) {

@@ -20,8 +20,7 @@ let provider = new firebase.auth.GoogleAuthProvider();
 
 //storage.clear();
 const setUsersName = (userName) => {
-    USERNAME = userName ? userName : "Sign In";
-    document.querySelector(".greeting__name").innerText = USERNAME;
+    document.querySelector(".greeting__name").innerText = userName;
 }
 
 const showSignInItems = (userInfo) => {
@@ -35,16 +34,20 @@ const showSignInItems = (userInfo) => {
         let inputTextArea = document.querySelector("#addItemForm");
         inputTextArea.style.display = "block";
         inputTextArea.style.opacity = 1;
+
         chrome.storage.sync.get(["actionItems", "name"], (data) => {
             let fName = "";
             if (data.name) {
                 fName = data.name
                 setUsersName(fName)
+                document.querySelector("#inputName").placeholder = fName;
             } else {
                 fName = userInfo.displayName.split(" ")[0];
                 setUsersName(fName)
+                document.querySelector("#inputName").placeholder = fName;
             }
         })
+
         dumpDB.collection(userUid)
             .onSnapshot((snapshot) => {
                 let changes = snapshot.docChanges();

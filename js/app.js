@@ -122,12 +122,8 @@ addItemForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let itemText = addItemForm.elements.namedItem("itemText").value;
     if (itemText && userUid) {
-        showSignInItems(user)
-    } else if (itemText && !userUid) {
-        actionItemsUtils.add(itemText, null, (actionItem) => {
-            renderActionItem(actionItem.text, actionItem.id, actionItem.completed, actionItem.website, 200)
-            addItemForm.elements.namedItem("itemText").value = "";
-        });
+        actionItemsUtils.add(itemText, null)
+        addItemForm.elements.namedItem("itemText").value = "";
     }
 })
 

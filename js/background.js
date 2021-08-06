@@ -24,22 +24,21 @@ chrome.contextMenus.create({
     "contexts": ["all"]
 })
 
-if (!userUid) {
-    chrome.contextMenus.onClicked.addListener((info, tab) => {
-        if (info.menuItemId == "linkSiteMenu") {
-            actionItemsUtils.addQuickActionItem("quickLink3", "Read this site", tab, () => {
-                actionItemsUtils.setProgress();
-            })
-        }
-    })
-}
 
-if (!userUid) {
-    chrome.runtime.onInstalled.addListener((details) => {
-        if (details.reason == "install") {
-            chrome.storage.sync.set({
-                actionItems: []
-            })
-        }
-    })
-}
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId == "linkSiteMenu") {
+        actionItemsUtils.addQuickActionItem("quickLink3", "Read this site", tab, () => {
+            actionItemsUtils.setProgress();
+        })
+    }
+})
+
+
+
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason == "install") {
+        chrome.storage.sync.set({
+            actionItems: []
+        })
+    }
+})
