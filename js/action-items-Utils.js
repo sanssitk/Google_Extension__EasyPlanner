@@ -68,22 +68,43 @@ class ActionItems {
     }
 
     markUnmarkCompleted(id, completedStatus) {
-        chrome.storage.sync.get(["actionItems"], (data) => {
-            let items = data.actionItems;
-            let foundItemIndex = items.findIndex((item) => item.id == id);
+        if (userUid) {
+            dumpDB.collection(userUid).doc(id).update({
+                completed: completedStatus
+            })
+        } else {
+            chrome.storage.sync.get(["actionItems"], (data) => {
+                let items = data.actionItems;
+                let foundItemIndex = items.findIndex((item) => item.id == id);
 
-            if (foundItemIndex >= 0) {
-                items[foundItemIndex].completed = completedStatus;
-                chrome.storage.sync.set({
-                    actionItems: items
-                })
-            }
-        })
+                if (foundItemIndex >= 0) {
+                    items[foundItemIndex].completed = completedStatus;
+                    chrome.storage.sync.set({
+                        actionItems: items
+                    })
+                }
+            })
+        }
+
     }
 
     setProgress = () => {
         if (userUid) {
-            console.log("Progress")
+            dumpDB.collection(userUid).get()
+                .then((collections) => {
+                    let totalItems = collections.size;
+                    dumpDB.collection(userUid)
+                        .where("completed", "!=", null)
+                        .get()
+                        .then((com) => {
+                            let completedItems = com.size;
+                            if (totalItems > 0) {
+                                let progress = completedItems / totalItems;
+                                circle.animate(progress)
+                            }
+                        })
+                })
+
         } else {
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;

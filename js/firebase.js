@@ -48,11 +48,10 @@ const showSignInItems = (userInfo) => {
         dumpDB.collection(userUid)
             .onSnapshot((snapshot) => {
                 let changes = snapshot.docChanges();
-                actionItemsUtils.setProgress();
                 changes.forEach((change) => {
+                    actionItemsUtils.setProgress();
                     if (change.type == "added") {
                         renderActionItems(change.doc.data())
-
                     } else if (change.type == "removed") {
                         let id = change.doc.data().id;
                         let jEle = $(`div[id="${id}"]`);
