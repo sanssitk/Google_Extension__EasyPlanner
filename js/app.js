@@ -57,12 +57,41 @@ const createQuickActionListener = () => {
     })
 }
 
+// const filterActionItem = (actionItems) => {
+//     const currentDate = new Date();
+//     currentDate.setHours(0, 0, 0, 0);
+
+//     if (userUid && actionItems) {
+
+//     } else {
+//         if (actionItems) {
+//             const filteredItems = actionItems.filter((item) => {
+//                 if (item.completed) {
+//                     const completedDate = new Date(item.completed)
+//                     if (completedDate < currentDate) {
+//                         return false;
+//                     }
+//                 }
+//                 return true;
+//             })
+//             return filteredItems;
+//         }
+//     }
+// }
+
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    if (userUid) {
-        console.log("filter")
-        return filteredItems;
+
+    if (userUid && actionItems) {
+        if (actionItems.completed) {
+            const completedDate = new Date(actionItems.completed)
+            if (completedDate < currentDate) {
+                return false;
+            }
+            return actionItems;
+        }
+        return actionItems;
     } else {
         if (actionItems) {
             const filteredItems = actionItems.filter((item) => {
@@ -81,7 +110,10 @@ const filterActionItem = (actionItems) => {
 
 const renderActionItems = (items) => {
     if (userUid) {
-        renderActionItem(items.text, items.id, items.completed, items.website)
+        let _items = filterActionItem(items)
+        if (_items) {
+            renderActionItem(_items.text, _items.id, _items.completed, _items.website)
+        }
     } else {
         const filtedItems = filterActionItem(items)
         filtedItems.map(item => {
