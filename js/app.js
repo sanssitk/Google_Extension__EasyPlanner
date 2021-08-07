@@ -4,6 +4,7 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
+// storage.clear()
 const createNameDialogListner = () => {
     let greetingTitle = document.querySelector(".greeting__title");
     greetingTitle.addEventListener("click", () => {
@@ -60,27 +61,21 @@ const filterActionItem = (actionItems) => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
     if (userUid) {
-        const filteredItems = actionItems.actionItem.filter((item) => {
-            if (item.completed) {
-                const completedDate = new Date(item.completed)
-                if (completedDate < currentDate) {
-                    return false;
-                }
-            }
-            return true;
-        })
+        console.log("filter")
         return filteredItems;
     } else {
-        const filteredItems = actionItems.filter((item) => {
-            if (item.completed) {
-                const completedDate = new Date(item.completed)
-                if (completedDate < currentDate) {
-                    return false;
+        if (actionItems) {
+            const filteredItems = actionItems.filter((item) => {
+                if (item.completed) {
+                    const completedDate = new Date(item.completed)
+                    if (completedDate < currentDate) {
+                        return false;
+                    }
                 }
-            }
-            return true;
-        })
-        return filteredItems;
+                return true;
+            })
+            return filteredItems;
+        }
     }
 }
 

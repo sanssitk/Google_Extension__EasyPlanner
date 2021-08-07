@@ -39,7 +39,7 @@ const showSignInItems = (userInfo) => {
             }
         })
 
-        dumpDB.collection(userUid)
+        dumpDB.collection(userUid).orderBy("added")
             .onSnapshot((snapshot) => {
                 let changes = snapshot.docChanges();
                 changes.forEach((change) => {

@@ -110,12 +110,12 @@ class ActionItems {
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;
                 let completedItems;
-                completedItems = items.filter(item => item.completed)
+                completedItems = items?.filter(item => item.completed)
                 let progress = 0;
-                if (items.length > 0) {
+                if (items?.length > 0) {
                     progress = completedItems.length / items.length;
                 }
-                this.setBrowserBadge(items.length - completedItems.length);
+                this.setBrowserBadge(items?.length - completedItems?.length);
                 if (typeof window.circle !== "undefined") circle.animate(progress); // Number from 0.0 to 1.0    
             })
         }
