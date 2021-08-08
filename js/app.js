@@ -1,5 +1,6 @@
 let storage = chrome.storage.sync;
 let addItemForm = document.querySelector("#addItemForm");
+let editButton = document.querySelector(".editButton");
 let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
@@ -13,11 +14,6 @@ const createNameDialogListner = () => {
     })
 }
 
-const createUpdateNameListener = () => {
-    let input = document.querySelector(".saveInput");
-    input.addEventListener("click", handleUpdateName)
-}
-
 const handleUpdateName = () => {
     let inputText = document.querySelector("#inputName").value;
     if (inputText) {
@@ -27,6 +23,11 @@ const handleUpdateName = () => {
             $('#updateNameModal').modal('hide')
         })
     }
+}
+
+const createUpdateNameListener = () => {
+    let input = document.querySelector(".saveInput");
+    input.addEventListener("click", handleUpdateName)
 }
 
 async function getCurrentTabl() {
@@ -42,6 +43,7 @@ async function getCurrentTabl() {
 }
 
 const handleQuickActionListener = (e) => {
+    const ele = e.target;
     const text = e.target.getAttribute("data-text");
     const id = e.target.getAttribute("data-id");
     getCurrentTabl().then((tab) => {
@@ -57,27 +59,37 @@ const createQuickActionListener = () => {
     })
 }
 
-// const filterActionItem = (actionItems) => {
-//     const currentDate = new Date();
-//     currentDate.setHours(0, 0, 0, 0);
+const handleButtonListEdit = () => {
+    let inputText = document.querySelector(".buttonList-control").value;
+    if (inputText) {
+        // save the name
+        console.log(inputText);
+        $('#updateButtonModal').modal('hide')
+    }
+}
 
-//     if (userUid && actionItems) {
+const showEditButtonOption = () => {
+    let buttons = document.querySelectorAll(".quickButton")
+    buttons.forEach((button) => {
+        const id = button.getAttribute("data-id");
+        if (id != "quickLink3") {
+            let btnEle = document.createElement("input");
+            btnEle.type = "text";
+            btnEle.classList.add("form-control");
+            btnEle.classList.add("buttonList-control");
+            btnEle.placeholder = `${button.outerText}`;
+            // btnEle.disabled = true;
+            document.querySelector(".buttonName").append(btnEle)
+            let input = document.querySelector(".saveInput2");
+            input.addEventListener("click", handleButtonListEdit)
+        }
+    })
+}
 
-//     } else {
-//         if (actionItems) {
-//             const filteredItems = actionItems.filter((item) => {
-//                 if (item.completed) {
-//                     const completedDate = new Date(item.completed)
-//                     if (completedDate < currentDate) {
-//                         return false;
-//                     }
-//                 }
-//                 return true;
-//             })
-//             return filteredItems;
-//         }
-//     }
-// }
+editButton.addEventListener("click", () => {
+    $('#updateButtonModal').modal('show')
+    showEditButtonOption()
+})
 
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
