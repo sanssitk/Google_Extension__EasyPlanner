@@ -224,6 +224,7 @@ h2 {
 /* Third Row ********************************************************************************/
 .actionItem_items {
     width: 100%;
+    margin-top: 6px;
 }
 
 .actionItem_container {
@@ -393,6 +394,15 @@ h2 {
     cursor: pointer;
 }
 
-.buttonList-control {
+.editButtonMain {
+    display: flex;
     margin-bottom: 4px;
+}
+
+#inputName2 {
+    max-width: 30%;
+}
+
+#dataText {
+    min-width: 70%;
 }

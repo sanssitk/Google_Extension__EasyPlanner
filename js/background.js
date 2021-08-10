@@ -38,7 +38,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason == "install") {
         chrome.storage.sync.set({
-            actionItems: []
+            actionItems: [],
+            initialButtons: [{
+                fTag: "Gym",
+                dataTag: "Go to Gym"
+            }]
         })
     }
 })

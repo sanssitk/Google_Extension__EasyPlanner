@@ -5,7 +5,7 @@ let itemsList = document.querySelector(".actionItem_items");
 
 let actionItemsUtils = new ActionItems();
 
-// storage.clear()
+storage.clear()
 const createNameDialogListner = () => {
     let greetingTitle = document.querySelector(".greeting__title");
     greetingTitle.addEventListener("click", () => {
@@ -59,36 +59,71 @@ const createQuickActionListener = () => {
     })
 }
 
-const handleButtonListEdit = () => {
-    let inputText = document.querySelector(".buttonList-control").value;
-    if (inputText) {
-        // save the name
-        console.log(inputText);
+const handleButtonListEdit = (e) => {
+    e.preventDefault();
+    let inputDiv = document.querySelectorAll(".editButtonMain");
+    let tagName = [];
+    let linkName = [];
+    inputDiv.forEach((inputName, index) => {
+        fTitle = inputName.firstElementChild.value
+        tagName.push(fTitle)
+        lTitle = inputName.lastElementChild.value
+        linkName.push(lTitle)
+    })
+    let newButtons = document.querySelectorAll(".quickButton")
+    newButtons.forEach((button, i) => {
+        const id = button.getAttribute("data-id");
+        if (id != "quickLink3" && button.outerText && tagName || linkName) {
+            console.log(button, "index: >>>>", i)
+
+            // let text = button.outerText;
+            // let dataId = button.getAttribute("data-text")
+            // text = tagName[i];
+            // dataId = linkName[i];
+        }
         $('#updateButtonModal').modal('hide')
-    }
+    })
 }
 
-const showEditButtonOption = () => {
+const showEditableButtonName = (buttonInfo, dataText) => {
+    let buttonText = buttonInfo.outerText;
+    let btnEle = `
+        <div class= "editButtonMain">
+        <input type="text" class="form-control buttonList-control" id="inputName2" placeholder="${buttonText}">
+        <input type="text" class="form-control buttonList-control" id="dataText" placeholder="${dataText}">
+        </div>        
+    `
+    document.querySelector(".buttonName").innerHTML += btnEle;
+    document.querySelector(".saveInput2").addEventListener("click", handleButtonListEdit)
+    let closeOrSave = document.querySelectorAll("#editButton");
+    closeOrSave.forEach((ele) => {
+        ele.addEventListener("click", () => {
+            let hideEle = document.querySelector(".buttonName");
+            while (hideEle.firstChild) {
+                hideEle.removeChild(hideEle.firstChild)
+            }
+            $('#updateNameModal').modal('hide')
+        })
+    })
+}
+
+
+const editButtonClick = () => {
     let buttons = document.querySelectorAll(".quickButton")
     buttons.forEach((button) => {
         const id = button.getAttribute("data-id");
+        const dataText = button.getAttribute("data-text")
         if (id != "quickLink3") {
-            let btnEle = document.createElement("input");
-            btnEle.type = "text";
-            btnEle.classList.add("form-control");
-            btnEle.classList.add("buttonList-control");
-            btnEle.placeholder = `${button.outerText}`;
-            // btnEle.disabled = true;
-            document.querySelector(".buttonName").append(btnEle)
-            let input = document.querySelector(".saveInput2");
-            input.addEventListener("click", handleButtonListEdit)
+            showEditableButtonName(button, dataText)
         }
     })
 }
 
 editButton.addEventListener("click", () => {
+    actionItemsUtils.saveButton("san", "jay", () => {})
+    actionItemsUtils.getButton()
     $('#updateButtonModal').modal('show')
-    showEditButtonOption()
+    editButtonClick()
 })
 
 const filterActionItem = (actionItems) => {

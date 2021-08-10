@@ -18,6 +18,53 @@ class ActionItems {
         this.add(text, website, callback)
     }
 
+    saveButton(fTag, dataTag, callback) {
+        let initialButton = {
+            fTag: fTag,
+            dataTag: dataTag
+        }
+        chrome.storage.sync.get(["initialButtons"], (data) => {
+            let buttons = data.initialButtons;
+            if (!buttons) {
+                buttons = [initialButton]
+            } else {
+                console.log("Yes", buttons)
+                buttons.map((button) => {
+                        button.fTag.replace(button.fTag, fTag)
+                        button.dataTag.replace(button.dataTag, dataTag)
+                    }) 
+            }
+            chrome.storage.sync.set({
+                initialButtons: buttons
+            }, () => {
+                callback(initialButton)
+            });
+        });
+
+        // chrome.storage.sync.get(["initialButtons"], (data) => {
+        //         let buttons = data.initialButtons;
+        //         if (!buttons){                    
+        //             buttons = [initialButton]                    
+        //         } else {
+        //             console.log("Yes", buttons)
+        //             buttons.map((button) => {
+        //                 button.fTag.replace(button.fTag, fTag)
+        //                 button.dataTag.replace(button.dataTag, dataTag)
+        //             }) 
+        //         }
+        //         chrome.storage.sync.set({
+        //             initialButtons: buttons
+        //         });
+        //     });
+    }
+
+    getButton = () => {
+        chrome.storage.sync.get(["actionItems"], (data) => {
+            let buttons = data.initialButtons;
+            console.log(data.initialButtons)
+        })
+    }
+
     add(text, website = null, callback) {
         let actionItem = {
             id: uuidv4(),
@@ -29,7 +76,7 @@ class ActionItems {
         if (userUid) {
             dumpDB.collection(userUid).doc(actionItem.id)
                 .set(actionItem)
-        } else {
+        } else {            
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;
                 if (!items) {
@@ -89,16 +136,20 @@ class ActionItems {
     }
 
     setProgress = () => {
+        const currentDate = new Date().toDateString();
         if (userUid) {
             dumpDB.collection(userUid).get()
                 .then((collections) => {
-                    let totalItems = collections.size;
+                    let totalItems = collections.size;                    
                     dumpDB.collection(userUid)
                         .where("completed", "!=", null)
+                        .where("completed", ">=", currentDate)
+                        .where("completed", "<=", currentDate + "\uf8ff")                        
                         .get()
                         .then((com) => {
-                            let completedItems = com.size;
-                            if (totalItems > 0) {
+                            let completedItems = com.size; 
+                            totalItems = totalItems - completedItems;                   
+                            if (totalItems > 0) {                                
                                 let progress = completedItems / totalItems;
                                 this.setBrowserBadge(totalItems - completedItems);
                                 if (typeof window.circle !== "undefined") circle.animate(progress)

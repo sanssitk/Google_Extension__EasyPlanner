@@ -3,7 +3,7 @@ let userUid = null;
 
 // Initializing firebase with config
 firebase.initializeApp(firebaseConfig);
-let db = firebase.firestore().collection("actionItems");
+// let db = firebase.firestore().collection("actionItems");
 
 let dumpDB = firebase.firestore();
 
