@@ -41,7 +41,7 @@ chrome.runtime.onInstalled.addListener((details) => {
             actionItems: [],
             initialButtons: [{
                 fTag: "Gym",
-                dataTag: "Go to Gym"
+                dataTag: "Go to gym"
             }]
         })
     }

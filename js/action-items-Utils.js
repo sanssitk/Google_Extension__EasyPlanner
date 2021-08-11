@@ -18,51 +18,28 @@ class ActionItems {
         this.add(text, website, callback)
     }
 
-    saveButton(fTag, dataTag, callback) {
-        let initialButton = {
-            fTag: fTag,
-            dataTag: dataTag
-        }
+    saveButton(fTag, dataTag, index) {
+        let initialButton = [
+            {fTag : "Gym", dataTag : "Go to gym"}, 
+            {fTag : "Medication", dataTag : "Take Medication"}
+        ]
         chrome.storage.sync.get(["initialButtons"], (data) => {
             let buttons = data.initialButtons;
             if (!buttons) {
-                buttons = [initialButton]
+                buttons = initialButton
             } else {
-                console.log("Yes", buttons)
-                buttons.map((button) => {
-                        button.fTag.replace(button.fTag, fTag)
-                        button.dataTag.replace(button.dataTag, dataTag)
-                    }) 
+                if (index == 0){
+                    buttons[0].fTag = fTag;
+                    buttons[0].dataTag = dataTag;
+                } else if (index == 1){
+                    buttons[1].fTag = fTag;
+                    buttons[1].dataTag = dataTag;
+                }
             }
             chrome.storage.sync.set({
                 initialButtons: buttons
-            }, () => {
-                callback(initialButton)
-            });
+            });            
         });
-
-        // chrome.storage.sync.get(["initialButtons"], (data) => {
-        //         let buttons = data.initialButtons;
-        //         if (!buttons){                    
-        //             buttons = [initialButton]                    
-        //         } else {
-        //             console.log("Yes", buttons)
-        //             buttons.map((button) => {
-        //                 button.fTag.replace(button.fTag, fTag)
-        //                 button.dataTag.replace(button.dataTag, dataTag)
-        //             }) 
-        //         }
-        //         chrome.storage.sync.set({
-        //             initialButtons: buttons
-        //         });
-        //     });
-    }
-
-    getButton = () => {
-        chrome.storage.sync.get(["actionItems"], (data) => {
-            let buttons = data.initialButtons;
-            console.log(data.initialButtons)
-        })
     }
 
     add(text, website = null, callback) {
