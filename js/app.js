@@ -13,7 +13,6 @@ const createNameDialogListner = () => {
 const handleUpdateName = () => {
     let inputText = document.querySelector("#inputName").value;
     if (inputText) {
-        // save the name
         actionItemsUtils.saveName(inputText, () => {
             setUsersName(inputText);
             $('#updateNameModal').modal('hide')
@@ -198,3 +197,5 @@ const animateDeleteItem = (jEle) => {
         jEle.remove();
     })
 }
+
+//storage.clear()

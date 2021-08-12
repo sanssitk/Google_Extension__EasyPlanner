@@ -120,15 +120,17 @@ class ActionItems {
         if (userUid) {
             dumpDB.collection(userUid).get()
                 .then((collections) => {
-                    let totalItems = collections.size;                    
+                    let totalItems = collections.size;                                     
                     dumpDB.collection(userUid)
                         .where("completed", "!=", null)
-                        .where("completed", ">=", currentDate)
-                        .where("completed", "<=", currentDate + "\uf8ff")                        
+                        // .where("completed", ">=", currentDate)
+                        // .where("completed", "<=", currentDate + "\uf8ff")                        
                         .get()
                         .then((com) => {
-                            let completedItems = com.size; 
-                            totalItems = totalItems - completedItems;                   
+                            collections.forEach((com) => {
+                                console.log(com.data())
+                            }) 
+                            let completedItems = com.size;                              
                             if (totalItems > 0) {                                
                                 let progress = completedItems / totalItems;
                                 this.setBrowserBadge(totalItems - completedItems);

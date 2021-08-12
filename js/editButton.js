@@ -8,7 +8,6 @@ const hideUpdateModal = () => {
     $('#updateButtonModal').modal('hide')
 }
 
-//storage.clear()
 const handleButtonSaveClick = (e) => {
     e.preventDefault();
     let buttonMain = document.querySelectorAll(".editButtonMain");
@@ -56,7 +55,6 @@ document.querySelector(".editButton").addEventListener("click", () => {
     editButtonClick()
 })
 
-// chrome.storage.sync.clear()
 const renderButtonItem = (fTag, dataTag, index) => {
     let ele = document.createElement("button");
     ele.classList.add("quickButton")
@@ -81,7 +79,7 @@ const renderButtonItem = (fTag, dataTag, index) => {
         if (oldEle.length > 0) {
             oldEle.replaceWith(ele)
         } else {
-            document.querySelector(".actionInput_shortLink").prepend(ele);
+            document.querySelector(".actionInput_shortLink").append(ele);
         }
     }
 }
