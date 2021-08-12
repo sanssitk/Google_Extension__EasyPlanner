@@ -1,10 +1,6 @@
 let storage = chrome.storage.sync;
 let addItemForm = document.querySelector("#addItemForm");
-let editButton = document.querySelector(".editButton");
 let itemsList = document.querySelector(".actionItem_items");
-
-let actionItemsUtils = new ActionItems();
-
 
 const createNameDialogListner = () => {
     let greetingTitle = document.querySelector(".greeting__title");
@@ -58,58 +54,6 @@ const createQuickActionListener = () => {
         button.addEventListener("click", handleQuickActionListener)
     })
 }
-
-const hideUpdateModal = () => {
-    let hideEle = document.querySelector(".buttonName");
-    while (hideEle.firstChild) {
-        hideEle.removeChild(hideEle.firstChild)
-    }
-    $('#updateButtonModal').modal('hide')
-}
-//storage.clear()
-const handleButtonListEdit = (e) => {
-    e.preventDefault();
-    let buttonMain = document.querySelectorAll(".editButtonMain");
-    buttonMain.forEach((values, index) => {
-        let fTag = values.firstElementChild.value
-        let dataTag = values.lastElementChild.value
-        actionItemsUtils.saveButton(fTag, dataTag, index);
-    })
-    hideUpdateModal()
-}
-
-const showEditableButtonName = (buttonInfo, dataText) => {
-    let buttonText = buttonInfo.outerText;
-    let btnEle = `
-        <div class= "editButtonMain">
-        <input type="text" class="form-control buttonList-control" id="inputName2" placeholder="${buttonText}">
-        <input type="text" class="form-control buttonList-control" id="dataText" placeholder="${dataText}">
-        </div>        
-    `
-    document.querySelector(".buttonName").innerHTML += btnEle;
-    document.querySelector(".saveInput2").addEventListener("click", handleButtonListEdit)
-    let closeOrSave = document.querySelectorAll("#editButton");
-    closeOrSave.forEach((ele) => {
-        ele.addEventListener("click", hideUpdateModal)
-    })
-}
-
-
-const editButtonClick = () => {
-    let buttons = document.querySelectorAll(".quickButton")
-    buttons.forEach((button) => {
-        const id = button.getAttribute("data-id");
-        const dataText = button.getAttribute("data-text")
-        if (id != "quickLink3") {
-            showEditableButtonName(button, dataText)
-        }
-    })
-}
-
-editButton.addEventListener("click", () => {
-    $('#updateButtonModal').modal('show')
-    editButtonClick()
-})
 
 const filterActionItem = (actionItems) => {
     const currentDate = new Date();
@@ -185,8 +129,6 @@ addItemForm.addEventListener("submit", (e) => {
         addItemForm.elements.namedItem("itemText").value = "";
     }
 })
-
-
 
 const renderActionItem = (text, id, completed, website = null, duration = 300) => {
     let element = document.createElement("div");

@@ -22,7 +22,7 @@ class ActionItems {
         let initialButton = [
             {fTag : "Gym", dataTag : "Go to gym"}, 
             {fTag : "Medication", dataTag : "Take Medication"}
-        ]
+        ]        
         chrome.storage.sync.get(["initialButtons"], (data) => {
             let buttons = data.initialButtons;
             if (!buttons) {
@@ -40,6 +40,9 @@ class ActionItems {
                 initialButtons: buttons
             });            
         });
+        chrome.storage.sync.get(["initialButtons"], (data) => {
+            console.log(data.initialButtons)
+        })
     }
 
     add(text, website = null, callback) {

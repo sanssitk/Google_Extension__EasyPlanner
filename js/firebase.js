@@ -88,6 +88,7 @@ const logIn = () => {
 }
 
 const signOff = () => {
+
     firebase.auth().signOut().then(() => {
         $('#updateNameModal').modal('hide')
         document.querySelector(".profile_image").style.backgroundImage = `url("./images/Logo128.png")`;
@@ -102,6 +103,19 @@ const signOff = () => {
 }
 
 const isSignInSignOut = () => {
+    chrome.storage.sync.get(["initialButtons"], (data) => {
+        let buttons = data.initialButtons;
+        if (!buttons) {
+            actionItemsUtils.saveButton()
+        } else {
+            buttons.forEach((button, index) => {
+                if (button.fTag && button.dataTag) {
+                    renderButtonItem(button.fTag, button.dataTag, index)
+                }
+            })
+        }
+    })
+
     firebase.auth().onAuthStateChanged((userInfo) => {
         if (userInfo) {
             userUid = userInfo.uid;
