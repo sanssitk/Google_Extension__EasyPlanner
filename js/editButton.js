@@ -25,7 +25,6 @@ const handleButtonSaveClick = (e) => {
 
 const showEditableButtonName = (buttonInfo, dataText) => {
     let buttonText = buttonInfo.outerText;
-
     let btnEle = `
         <div class= "editButtonMain">
         <input type="text" class="form-control buttonList-control" id="inputName2" placeholder=${buttonText}>
