@@ -156,6 +156,10 @@ h2 {
 .btn.btn-outline-primary * {
     pointer-events: none;
 }
+.actionInput_shortLink{
+    display: flex;
+    justify-content: space-evenly;
+}
 
 .actionInput_shortLink .btn.btn-outline-primary {
     font-size: 12px;
@@ -405,4 +409,8 @@ h2 {
 
 #dataText {
     min-width: 70%;
+}
+
+.quickButton{
+    margin-right: 4px;
 }

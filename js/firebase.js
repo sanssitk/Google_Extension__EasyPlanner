@@ -26,7 +26,6 @@ const showSignInItems = (userInfo) => {
         inputTextArea.style.display = "block";
         inputTextArea.style.opacity = 1;
 
-
         chrome.storage.sync.get(["actionItems", "name"], (data) => {
             let fName;
             if (data.name) {

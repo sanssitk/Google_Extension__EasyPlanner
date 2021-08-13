@@ -42,6 +42,9 @@ chrome.runtime.onInstalled.addListener((details) => {
             initialButtons: [{
                 fTag: "Gym",
                 dataTag: "Go to gym"
+            }, {
+                fTag: "Medication",
+                dataTag: "Take Medication"
             }]
         })
     }

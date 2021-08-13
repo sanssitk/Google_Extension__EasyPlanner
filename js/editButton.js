@@ -12,7 +12,6 @@ const handleButtonSaveClick = (e) => {
     e.preventDefault();
     let buttonMain = document.querySelectorAll(".editButtonMain");
     buttonMain.forEach((values, index) => {
-        console.log(`index: ${index}`, values)
         let fTag = values.firstElementChild.value
         let dataTag = values.lastElementChild.value
         if (fTag && dataTag) {
@@ -26,6 +25,7 @@ const handleButtonSaveClick = (e) => {
 
 const showEditableButtonName = (buttonInfo, dataText) => {
     let buttonText = buttonInfo.outerText;
+    console.log(buttonText, dataText)
     let btnEle = `
         <div class= "editButtonMain">
         <input type="text" class="form-control buttonList-control" id="inputName2" placeholder="${buttonText}">

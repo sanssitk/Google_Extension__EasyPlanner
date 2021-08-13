@@ -19,26 +19,26 @@ class ActionItems {
     }
 
     saveButton(fTag, dataTag, index) {
-        let initialButton = [
-            {fTag : "Gym", dataTag : "Go to gym"}, 
-            {fTag : "Medication", dataTag : "Take Medication"}
-        ]        
+        let initialButton = [{
+            fTag: fTag,
+            dataTag: dataTag
+        }]
         chrome.storage.sync.get(["initialButtons"], (data) => {
             let buttons = data.initialButtons;
             if (!buttons) {
                 buttons = initialButton
             } else {
-                if (index == 0){
+                if (index == 0) {
                     buttons[0].fTag = fTag;
                     buttons[0].dataTag = dataTag;
-                } else if (index == 1){
+                } else if (index == 1) {
                     buttons[1].fTag = fTag;
                     buttons[1].dataTag = dataTag;
                 }
             }
             chrome.storage.sync.set({
                 initialButtons: buttons
-            });            
+            });
         });
     }
 
@@ -53,7 +53,7 @@ class ActionItems {
         if (userUid) {
             dumpDB.collection(userUid).doc(actionItem.id)
                 .set(actionItem)
-        } else {            
+        } else {
             chrome.storage.sync.get(["actionItems"], (data) => {
                 let items = data.actionItems;
                 if (!items) {
@@ -75,7 +75,7 @@ class ActionItems {
             dumpDB.collection(userUid).doc(id)
                 .delete()
                 .catch((error) => {
-                    throw error 
+                    throw error
                 });
         } else {
             chrome.storage.sync.get(["actionItems"], (data) => {
@@ -116,26 +116,24 @@ class ActionItems {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         if (userUid) {
-                dumpDB.collection(userUid).get()
-                .then((collections) => { 
-                    let totalItems = []; 
+            dumpDB.collection(userUid).get()
+                .then((collections) => {
+                    let totalItems = [];
                     let completedItems = [];
-                    collections.forEach((collection) => {                        
+                    collections.forEach((collection) => {
                         let itemCompletedDate = new Date(collection.data().completed);
-                        console.log(currentDate, itemCompletedDate, collection.data().completed)
-                        if (itemCompletedDate > currentDate || collection.data().completed == null){
+                        if (itemCompletedDate > currentDate || collection.data().completed == null) {
                             totalItems.push(itemCompletedDate)
                         }
                         if (itemCompletedDate > currentDate && collection.data().completed !== null) {
                             completedItems.push(itemCompletedDate)
-                        }                      
+                        }
                     })
-                    if (totalItems.length > 0) {                                
-                                let progress = completedItems.length / totalItems.length;
-                                this.setBrowserBadge(totalItems.length - completedItems.length);
-                                if (typeof window.circle !== "undefined") circle.animate(progress)
-                            }                    
-                    
+                    if (totalItems.length > 0) {
+                        let progress = completedItems.length / totalItems.length;
+                        this.setBrowserBadge(totalItems.length - completedItems.length);
+                        if (typeof window.circle !== "undefined") circle.animate(progress)
+                    }
                 })
 
         } else if (!userUid) {
@@ -144,7 +142,7 @@ class ActionItems {
                 let completedItems;
                 completedItems = items?.filter(item => item.completed)
                 let progress = 0;
-                if (items?.length > 0) {
+                if (items ?.length > 0) {
                     progress = completedItems.length / items.length;
                 }
                 this.setBrowserBadge(items?.length - completedItems?.length);
