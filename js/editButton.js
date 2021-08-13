@@ -25,14 +25,35 @@ const handleButtonSaveClick = (e) => {
 
 const showEditableButtonName = (buttonInfo, dataText) => {
     let buttonText = buttonInfo.outerText;
-    console.log(buttonText, dataText)
-    let btnEle = `
-        <div class= "editButtonMain">
-        <input type="text" class="form-control buttonList-control" id="inputName2" placeholder="${buttonText}">
-        <input type="text" class="form-control buttonList-control" id="dataText" placeholder="${dataText}">
-        </div>        
-    `
-    document.querySelector(".buttonName").innerHTML += btnEle;
+    let btnEle = document.createElement("div");
+    btnEle.classList.add("editButtonMain");
+
+    let inputName = document.createElement("input")
+    inputName.type = "text"
+    inputName.classList.add("form-control")
+    inputName.classList.add("buttonList-control")
+    inputName.id = "inputName2"
+    inputName.placeholder = buttonText;
+
+    let datatext = document.createElement("input")
+    datatext.type = "text"
+    datatext.classList.add("form-control")
+    datatext.classList.add("buttonList-control")
+    datatext.id = "dataText"
+    datatext.placeholder = dataText;
+
+    btnEle.prepend(datatext)
+    btnEle.prepend(inputName)
+
+    document.querySelector(".buttonName").appendChild(btnEle);
+
+    // let btnEle = `
+    //     <div class= "editButtonMain">
+    //     <input type="text" class="form-control buttonList-control" id="inputName2" placeholder=${buttonText}>
+    //     <input type="text" class="form-control buttonList-control" id="dataText" placeholder=${dataText}>
+    //     </div>        
+    // `
+    // document.querySelector(".buttonName").innerHTML += btnEle;
     document.querySelector(".saveInput2").addEventListener("click", handleButtonSaveClick)
     let closeOrSave = document.querySelectorAll("#editButton");
     closeOrSave.forEach((ele) => {
@@ -61,18 +82,18 @@ const renderButtonItem = (fTag, dataTag, index) => {
     ele.classList.add("quickButton")
     ele.classList.add("btn")
     ele.classList.add("btn-outline-primary")
-
     if (index == 0) {
         ele.setAttribute("data-id", "quickLink1")
-        ele.setAttribute("data-text", dataTag)
+        ele.setAttribute("data-text", `${dataTag}`)
         ele.innerHTML = `<i class="fas fa-plus"></i> ${fTag}`
         let oldEle = $("button[data-id='quickLink1']");
         oldEle.length > 0 ? oldEle.replaceWith(ele) : document.querySelector(".actionInput_shortLink").prepend(ele);
     } else if (index == 1) {
         ele.setAttribute("data-id", "quickLink2")
-        ele.setAttribute("data-text", dataTag)
+        ele.setAttribute("data-text", `${dataTag}`)
         ele.innerHTML = `<i class="fas fa-plus"></i> ${fTag}`
         let oldEle = $("button[data-id='quickLink2']");
-        oldEle.length > 0 ? oldEle.replaceWith(ele) : document.querySelector(".actionInput_shortLink").prepend(ele);
+        let lastEle = document.querySelector("[data-id='quickLink3']");
+        oldEle.length > 0 ? oldEle.replaceWith(ele) : lastEle.insertAdjacentElement("beforebegin", ele);
     }
 }
