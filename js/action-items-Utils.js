@@ -40,9 +40,6 @@ class ActionItems {
                 initialButtons: buttons
             });            
         });
-        chrome.storage.sync.get(["initialButtons"], (data) => {
-            console.log(data.initialButtons)
-        })
     }
 
     add(text, website = null, callback) {
@@ -78,7 +75,7 @@ class ActionItems {
             dumpDB.collection(userUid).doc(id)
                 .delete()
                 .catch((error) => {
-                    console.error("Error removing document: ", error);
+                    throw error 
                 });
         } else {
             chrome.storage.sync.get(["actionItems"], (data) => {
@@ -116,27 +113,29 @@ class ActionItems {
     }
 
     setProgress = () => {
-        const currentDate = new Date().toDateString();
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
         if (userUid) {
-            dumpDB.collection(userUid).get()
-                .then((collections) => {
-                    let totalItems = collections.size;                                     
-                    dumpDB.collection(userUid)
-                        .where("completed", "!=", null)
-                        // .where("completed", ">=", currentDate)
-                        // .where("completed", "<=", currentDate + "\uf8ff")                        
-                        .get()
-                        .then((com) => {
-                            collections.forEach((com) => {
-                                console.log(com.data())
-                            }) 
-                            let completedItems = com.size;                              
-                            if (totalItems > 0) {                                
-                                let progress = completedItems / totalItems;
-                                this.setBrowserBadge(totalItems - completedItems);
+                dumpDB.collection(userUid).get()
+                .then((collections) => { 
+                    let totalItems = []; 
+                    let completedItems = [];
+                    collections.forEach((collection) => {                        
+                        let itemCompletedDate = new Date(collection.data().completed);
+                        console.log(currentDate, itemCompletedDate, collection.data().completed)
+                        if (itemCompletedDate > currentDate || collection.data().completed == null){
+                            totalItems.push(itemCompletedDate)
+                        }
+                        if (itemCompletedDate > currentDate && collection.data().completed !== null) {
+                            completedItems.push(itemCompletedDate)
+                        }                      
+                    })
+                    if (totalItems.length > 0) {                                
+                                let progress = completedItems.length / totalItems.length;
+                                this.setBrowserBadge(totalItems.length - completedItems.length);
                                 if (typeof window.circle !== "undefined") circle.animate(progress)
-                            }
-                        })
+                            }                    
+                    
                 })
 
         } else if (!userUid) {

@@ -12,6 +12,7 @@ const handleButtonSaveClick = (e) => {
     e.preventDefault();
     let buttonMain = document.querySelectorAll(".editButtonMain");
     buttonMain.forEach((values, index) => {
+        console.log(`index: ${index}`, values)
         let fTag = values.firstElementChild.value
         let dataTag = values.lastElementChild.value
         if (fTag && dataTag) {
@@ -66,20 +67,12 @@ const renderButtonItem = (fTag, dataTag, index) => {
         ele.setAttribute("data-text", dataTag)
         ele.innerHTML = `<i class="fas fa-plus"></i> ${fTag}`
         let oldEle = $("button[data-id='quickLink1']");
-        if (oldEle.length > 0) {
-            oldEle.replaceWith(ele)
-        } else {
-            document.querySelector(".actionInput_shortLink").append(ele);
-        }
+        oldEle.length > 0 ? oldEle.replaceWith(ele) : document.querySelector(".actionInput_shortLink").prepend(ele);
     } else if (index == 1) {
         ele.setAttribute("data-id", "quickLink2")
         ele.setAttribute("data-text", dataTag)
         ele.innerHTML = `<i class="fas fa-plus"></i> ${fTag}`
         let oldEle = $("button[data-id='quickLink2']");
-        if (oldEle.length > 0) {
-            oldEle.replaceWith(ele)
-        } else {
-            document.querySelector(".actionInput_shortLink").append(ele);
-        }
+        oldEle.length > 0 ? oldEle.replaceWith(ele) : document.querySelector(".actionInput_shortLink").prepend(ele);
     }
 }

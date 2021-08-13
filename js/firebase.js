@@ -43,8 +43,8 @@ const showSignInItems = (userInfo) => {
         dumpDB.collection(userUid).orderBy("added")
             .onSnapshot((snapshot) => {
                 let changes = snapshot.docChanges();
-                changes.forEach((change) => {
-                    actionItemsUtils.setProgress();
+                actionItemsUtils.setProgress();
+                changes.forEach((change) => {                    
                     if (change.type == "added") {
                         renderActionItems(change.doc.data())
                     } else if (change.type == "removed") {
@@ -98,7 +98,7 @@ const signOff = () => {
         showSignOffItems();
         window.close();
     }).catch((error) => {
-        console.log(error)
+        throw error
     });
 }
 
