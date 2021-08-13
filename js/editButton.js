@@ -25,35 +25,14 @@ const handleButtonSaveClick = (e) => {
 
 const showEditableButtonName = (buttonInfo, dataText) => {
     let buttonText = buttonInfo.outerText;
-    let btnEle = document.createElement("div");
-    btnEle.classList.add("editButtonMain");
 
-    let inputName = document.createElement("input")
-    inputName.type = "text"
-    inputName.classList.add("form-control")
-    inputName.classList.add("buttonList-control")
-    inputName.id = "inputName2"
-    inputName.placeholder = buttonText;
-
-    let datatext = document.createElement("input")
-    datatext.type = "text"
-    datatext.classList.add("form-control")
-    datatext.classList.add("buttonList-control")
-    datatext.id = "dataText"
-    datatext.placeholder = dataText;
-
-    btnEle.prepend(datatext)
-    btnEle.prepend(inputName)
-
-    document.querySelector(".buttonName").appendChild(btnEle);
-
-    // let btnEle = `
-    //     <div class= "editButtonMain">
-    //     <input type="text" class="form-control buttonList-control" id="inputName2" placeholder=${buttonText}>
-    //     <input type="text" class="form-control buttonList-control" id="dataText" placeholder=${dataText}>
-    //     </div>        
-    // `
-    // document.querySelector(".buttonName").innerHTML += btnEle;
+    let btnEle = `
+        <div class= "editButtonMain">
+        <input type="text" class="form-control buttonList-control" id="inputName2" placeholder=${buttonText}>
+        <input type="text" class="form-control buttonList-control" id="dataText" placeholder=${dataText}>
+        </div>        
+    `
+    document.querySelector(".buttonName").innerHTML += btnEle;
     document.querySelector(".saveInput2").addEventListener("click", handleButtonSaveClick)
     let closeOrSave = document.querySelectorAll("#editButton");
     closeOrSave.forEach((ele) => {
