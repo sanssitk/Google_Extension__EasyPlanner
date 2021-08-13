@@ -3,6 +3,8 @@
   "version": "1.0",
   "description": "Plan your day and motivate you to take action!",
   "permissions": ["storage", "tabs", "contextMenus"],
+  "content_security_policy": 
+  "script-src 'self' https://cdn.firebase.com https://apis.google.com https://www.gstatic.com; object-src 'self'",
   "background": {
     "scripts": [
       "packages/uuidv4.min.js",

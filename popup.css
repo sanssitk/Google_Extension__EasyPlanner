@@ -151,16 +151,14 @@ h2 {
     font-size: 16px;
     color: var(--text-color);
     font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.actionInput_shortLink {
-    display: flex;
-    justify-content: space-between;
 }
 
 .btn.btn-outline-primary * {
     pointer-events: none;
+}
+.actionInput_shortLink{
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .actionInput_shortLink .btn.btn-outline-primary {
@@ -213,16 +211,13 @@ h2 {
 
 .actionInput_container {
     display: flex;
+    align-items: center;
 }
 
 .actionInput_input {
-    flex: 1;
+    /* flex: 1; */
     display: flex;
     flex-direction: column;
-}
-
-.actionInput_shortLink {
-    display: flex;
 }
 
 .progressContainer {
@@ -233,6 +228,7 @@ h2 {
 /* Third Row ********************************************************************************/
 .actionItem_items {
     width: 100%;
+    margin-top: 6px;
 }
 
 .actionItem_container {
@@ -384,4 +380,37 @@ h2 {
 .actionItem_title span {
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+#addItemForm {
+    display: none;
+    opacity: 0;
+}
+
+.addAction-items {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.addAction-items i {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.editButtonMain {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+#inputName2 {
+    max-width: 30%;
+}
+
+#dataText {
+    min-width: 70%;
+}
+
+.quickButton{
+    margin-right: 4px;
 }
